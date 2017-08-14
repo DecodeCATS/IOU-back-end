@@ -55,7 +55,8 @@ CREATE TABLE connections (
 CREATE TABLE contracts (
 
     contract_id INT AUTO_INCREMENT NOT NULL,
-    connection_id INT NOT NULL,
+    payee_id INT NOT NULL,
+    payer_id INT NOT NULL,
     parent_id INT DEFAULT NULL,
     -- version INT NOT NULL,
     description VARCHAR(255) DEFAULT NULL,
@@ -69,7 +70,7 @@ CREATE TABLE contracts (
 
     PRIMARY KEY (contract_id),
     FOREIGN KEY (parent_id) REFERENCES contracts (parent_id),
-    FOREIGN KEY (connection_id) REFERENCES connections (connection_id)
+    FOREIGN KEY (payee_id, payer_id) REFERENCES users (user_idß)
     UNIQUE KEY (parent_id, version),
 );
 
@@ -100,6 +101,33 @@ CREATE TABLE payments (
     PRIMARY KEY (payment_id),
     FOREIGN KEY (contract_id) REFERENCES contracts (contract_id),
     FOREIGN KEY (currency_id) REFERENCES currencies (currency_id)
+);
+
+-- Table notifications
+CREATE TABLE notifications (
+
+    notification_id INT AUTO_INCREMENT NOT NULL,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    notification_type ENUM('payment', 'alert') NOT NULL,
+    message VARCHAR(255) NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (notification_id),
+    FOREIGN KEY (sender_id, receiver_id) REFERENCES users (user_id)
+);
+
+-- Table notifications_blacklist
+CREATE TABLE notifications_blacklist (
+
+    notifications_blacklist_id INT AUTO_INCREMENT NOT NULL,
+    sender_id INT NOT NULL,
+    receiver_id INT NOT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
+
+    PRIMARY KEY (notification_id),
 );
 
 
