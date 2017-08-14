@@ -14,17 +14,22 @@ module.exports = (dataLoader) => {
 
     dataLoader.createUser({
       email: req.body.email,
+      username: req.body.username,
       password: req.body.password,
-      avatarUrl: `https://www.gravatar.com/avatar/${hash}?s=60`
+      avatar_url: `https://www.gravatar.com/avatar/${hash}?s=60`,
+      first_name: req.body.first_name,
+      last_name: req.body.last_name
     })
     .then(user => {
-      console.log(user[0]);
-      var objUser ={
-        id: user[0].id,
-        email: user[0].email,
-        avatarUrl: user[0].avatarUrl,
-        createdAt: user[0].createdAt,
-        updatedAt: user[0].updatedAt
+      console.log(user);
+      var objUser = {
+        userName: user.id,
+        firstName: user.first_name,
+        lastName: user.last_name,
+        password: user.password,
+        email: user.email,
+        description: user.description,
+        avatarUrl: user.avatar_url
       };
       console.log('my object', objUser);
       //res.header('Access-Control-Allow-Origin', '*');

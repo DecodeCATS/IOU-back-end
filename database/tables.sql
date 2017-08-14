@@ -11,7 +11,7 @@ CREATE TABLE users (
      email VARCHAR(255) NOT NULL UNIQUE,
      username VARCHAR(255) NOT NULL UNIQUE,
      password VARCHAR(60) NOT NULL,
-     type ENUM('person', 'organisation', 'unlisted'),
+     user_type ENUM('Person', 'Organisation', 'Unlisted') DEFAULT 'Person',
      avatar_url VARCHAR(1000),
      is_deleted BOOLEAN NOT NULL DEFAULT 0,
      first_name VARCHAR(255),
@@ -30,9 +30,9 @@ CREATE TABLE sessions (
     user_id INT UNIQUE NOT NULL,
     token VARCHAR(255) NOT NULL,
     is_valid BOOLEAN NOT NULL DEFAULT 1,
-    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     logout_time TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (session_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
