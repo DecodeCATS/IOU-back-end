@@ -11,16 +11,16 @@ CREATE TABLE users (
      email VARCHAR(255) NOT NULL UNIQUE,
      username VARCHAR(255) NOT NULL UNIQUE,
      password VARCHAR(60) NOT NULL,
-     type ENUM('person', 'organisation', 'unlisted')
+     type ENUM('person', 'organisation', 'unlisted'),
      avatar_url VARCHAR(1000),
-     is_obsolete BOOLEAN NOT NULL DEFAULT 0,
+     is_deleted BOOLEAN NOT NULL DEFAULT 0,
      first_name VARCHAR(255),
      last_name VARCHAR(255),
      description VARCHAR(255),
      created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
      updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-     PRIMARY KEY (id)
+     PRIMARY KEY (user_id)
 );
 
 -- Table sessions
@@ -29,10 +29,10 @@ CREATE TABLE sessions (
     session_id INT AUTO_INCREMENT NOT NULL,
     user_id INT UNIQUE NOT NULL,
     token VARCHAR(255) NOT NULL,
-    is_valid BOOLEAN SET DEFAULT 1;
+    is_valid BOOLEAN NOT NULL DEFAULT 1,
     login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
-    logout_time TIMESTAMP CURRENT_TIMESTAMP,
+    logout_time TIMESTAMP NULL DEFAULT NULL,
 
     PRIMARY KEY (session_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
@@ -48,7 +48,8 @@ CREATE TABLE connections (
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (connection_id, user1_id, user2_id),
-    FOREIGN KEY (user1_id, user2_id) REFERENCES users (user_id, user_id)
+    FOREIGN KEY (user1_id) REFERENCES users (user_id),
+    FOREIGN KEY (user2_id) REFERENCES users (user_id)
 );
 
 -- Table contracts
@@ -58,20 +59,17 @@ CREATE TABLE contracts (
     payee_id INT NOT NULL,
     payer_id INT NOT NULL,
     parent_id INT DEFAULT NULL,
-    -- version INT NOT NULL,
     description VARCHAR(255) DEFAULT NULL,
     total_amount INT NOT NULL,
-    -- remaining_amount INT NOT NULL,
-    deadline_date TIMESTAMP,
-    accepted_date TIMESTAMP,
+    due_date TIMESTAMP NULL DEFAULT NULL,
+    accepted_date TIMESTAMP NULL DEFAULT NULL,
     contract_status ENUM('active', 'completed', 'overdue', 'cancelled'),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (contract_id),
-    FOREIGN KEY (parent_id) REFERENCES contracts (parent_id),
-    FOREIGN KEY (payee_id, payer_id) REFERENCES users (user_idß)
-    UNIQUE KEY (parent_id, version),
+    FOREIGN KEY (payee_id) REFERENCES users (user_id),
+    FOREIGN KEY (payer_id) REFERENCES users (user_id)
 );
 
 -- Currency currencies
@@ -80,6 +78,7 @@ CREATE TABLE currencies (
     currency_id INT AUTO_INCREMENT NOT NULL,
     name VARCHAR(255) NOT NULL,
     symbol VARCHAR(10),
+    is_base BOOLEAN NOT NULL DEFAULT 1,
 
     PRIMARY KEY (currency_id)
 );
@@ -90,11 +89,12 @@ CREATE TABLE payments (
     payment_id INT AUTO_INCREMENT NOT NULL,
     contract_id INT NOT NULL,
     currency_id INT NOT NULL,
-    deadline_date TIMESTAMP,
-    payment_date TIMESTAMP,
+    due_date TIMESTAMP NULL DEFAULT NULL,
+    payment_date TIMESTAMP NULL DEFAULT NULL,
     payment_amount INT NOT NULL,
     payment_type ENUM('interest', 'payment', 'partial payment'),
     payment_status ENUM('active', 'completed', 'overdue', 'cancelled'),
+    is_deleted BOOLEAN NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -109,13 +109,16 @@ CREATE TABLE notifications (
     notification_id INT AUTO_INCREMENT NOT NULL,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    notification_type ENUM('payment', 'alert') NOT NULL,
+    object_id INT NOT NULL,
+    object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users'),
+    notification_type ENUM('payment', 'alert', 'warning', 'request') NOT NULL,
     message VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (notification_id),
-    FOREIGN KEY (sender_id, receiver_id) REFERENCES users (user_id)
+    FOREIGN KEY (sender_id) REFERENCES users (user_id),
+    FOREIGN KEY (receiver_id) REFERENCES users (user_id)
 );
 
 -- Table notifications_blacklist
@@ -127,7 +130,7 @@ CREATE TABLE notifications_blacklist (
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    PRIMARY KEY (notification_id),
+    PRIMARY KEY (notifications_blacklist_id)
 );
 
 
