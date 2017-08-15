@@ -83,6 +83,7 @@ CREATE TABLE currencies (
     name VARCHAR(255) NOT NULL,
     symbol VARCHAR(10),
     is_base BOOLEAN NOT NULL DEFAULT 1,
+    currency_code VARCHAR(3) NOT NULL,
 
     PRIMARY KEY (currency_id)
 );
