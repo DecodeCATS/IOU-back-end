@@ -57,8 +57,8 @@ CREATE TABLE contracts (
 
     contract_id INT AUTO_INCREMENT NOT NULL,
     title VARCHAR (50) NOT NULL,
-    payee_id INT NOT NULL,
-    payer_id INT DEFAULT NULL,
+    payee_id INT,
+    payer_id INT NOT NULL,
     parent_id INT DEFAULT NULL,
     description VARCHAR(255) DEFAULT NULL,
     total_amount INT NOT NULL,
@@ -83,6 +83,7 @@ CREATE TABLE currencies (
     name VARCHAR(255) NOT NULL,
     symbol VARCHAR(10),
     is_base BOOLEAN NOT NULL DEFAULT 1,
+    currency_code VARCHAR(3) NOT NULL,
 
     PRIMARY KEY (currency_id)
 );
