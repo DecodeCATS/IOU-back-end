@@ -57,7 +57,7 @@ CREATE TABLE contracts (
 
     contract_id INT AUTO_INCREMENT NOT NULL,
     payee_id INT NOT NULL,
-    payer_id INT NOT NULL,
+    payer_id INT DEFAULT NULL,
     parent_id INT DEFAULT NULL,
     description VARCHAR(255) DEFAULT NULL,
     total_amount INT NOT NULL,
@@ -66,7 +66,7 @@ CREATE TABLE contracts (
     payment_frequency ENUM ('one-time', 'daily', 'weekly', 'bi-weekly', 'monthly', 'yearly', 'random') DEFAULT 'one-time',
     due_date TIMESTAMP NULL DEFAULT NULL,
     accepted_date TIMESTAMP NULL DEFAULT NULL,
-    contract_status ENUM('active', 'completed', 'overdue', 'cancelled'),
+    contract_status ENUM('active', 'completed', 'overdue', 'cancelled', 'proposed'),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
