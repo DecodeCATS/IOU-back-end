@@ -66,7 +66,7 @@ CREATE TABLE contracts (
     payment_frequency ENUM ('one-time', 'daily', 'weekly', 'bi-weekly', 'monthly', 'yearly', 'random') DEFAULT 'one-time',
     due_date TIMESTAMP NULL DEFAULT NULL,
     accepted_date TIMESTAMP NULL DEFAULT NULL,
-    contract_status ENUM('active', 'completed', 'overdue', 'cancelled', 'proposed'),
+    contract_status ENUM('pending', 'active', 'completed', 'overdue', 'cancelled'),
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

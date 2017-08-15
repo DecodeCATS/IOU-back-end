@@ -1,11 +1,13 @@
-USE dashboardly;
+USE iou;
 
-INSERT INTO `users` (email, password) VALUES ('grandma@dashboard.com','cookies');
-INSERT INTO `users`(email, password) VALUES ('grandpa@dashboard.com','cookies');
+INSERT INTO `users` (email, username, password, first_name, last_name) VALUES ('sadnan@iou.com','ssaquif','abcd123','Sadnan','Saquif');
+INSERT INTO `users` (email, username, password, first_name, last_name) VALUES ('anotonio@iou.com','nebulaUnicornis','abcd123','Antonio','Quintero');
+INSERT INTO `users` (email, username, password, first_name, last_name) VALUES ('chhaya@iou.com','tsirrus','abcd123','Chhaya','Tuok');
+INSERT INTO `users` (email, username, password, first_name, last_name) VALUES ('tetyana@iou.com','tetyanamyronova','abcd123','Tetyana','Myronova');
 
-INSERT INTO `boards`(ownerId, title, description) VALUES (1, 'soaps', 'favourite shows');
-INSERT INTO `boards`(ownerId, title, description) VALUES (2, 'matches', 'soccer matches');
 
-INSERT INTO `bookmarks` (boardId, title, url) VALUES (1, 'got', 'http://www.hbo.com/game-of-thrones');
-INSERT INTO `bookmarks` (boardId, title, url) VALUES (2, 'soccernews', 'http://www.skysports.com/football/news');
+INSERT INTO `connections` (user1_id, user2_id) VALUES (1,2);
+INSERT INTO `connections` (user1_id, user2_id) VALUES (2,1);
+INSERT INTO `connections` (user1_id, user2_id) VALUES (3,4);
+INSERT INTO `connections` (user1_id, user2_id) VALUES (4,3);
 
