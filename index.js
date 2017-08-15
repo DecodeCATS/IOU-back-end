@@ -15,13 +15,14 @@ const DashboardlyDataLoader = require('./lib/dashboardly.js');
 const authController = require('./controllers/auth.js');
 const boardsController = require('./controllers/boards.js');
 const bookmarksController = require('./controllers/bookmarks.js');
+const notificationsController = require('./controllers/notifications.js');
 
 
 // Database / data loader initialization
 const connection = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'admin',
+  password: 'Admin123.',
   database: 'iou'
 });
 
@@ -40,21 +41,17 @@ app.use(function(req, res, next) {
 });
 
 
-app.use(cors({
-/*  allowedOrigins: [
-    'https://80c06665.ngrok.io', 'http://localhost:3000', 'http://decodemtl-ct-tsirrus.c9users.io:8080', '*'
-  ],*/
-}));
+app.use(cors());
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-//app.use(cookieParser);
 app.use(checkLoginToken(dataLoader));
 
 
 app.use('/auth', authController(dataLoader));
 app.use('/boards', boardsController(dataLoader));
 app.use('/bookmarks', bookmarksController(dataLoader));
+app.use('/notifications', notificationsController(dataLoader));
 
 
 // Start the server
