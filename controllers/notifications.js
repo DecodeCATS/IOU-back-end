@@ -32,6 +32,5 @@ module.exports = (dataLoader) => {
 
     });
 
-
     return notificationController;
 }
