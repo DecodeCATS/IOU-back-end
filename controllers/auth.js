@@ -63,23 +63,24 @@ module.exports = (dataLoader) => {
 
   // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
-    // TODO: this is up to you to implement :)
-    //console.log("Headers ",req.headers);
-    //console.log("Authorization = ",req.headers.authorization.split(' ')[1]);
-    //dataLoader.getUserFromSession(req.headers.authorization.split(' ')[1])
-    dataLoader.getUserFromSession(req.sessionToken)
-      .then(user => {
-        console.log(user[0]);
-        var objUser = {
-          id: user[0].users_id,
-          email: user[0].users_email,
-          avatarUrl: user[0].users_avatarUrl,
-          createdAt: user[0].users_createdAt,
-          updatedAt: user[0].users_updatedAt
-        };
-        console.log((objUser));
-        res.status(201).json(objUser);
-      })
+      dataLoader.getUserFromSession(req.sessionToken)
+
+          .then(user => {
+              var objUser = {
+                  id: user.users_user_id,
+                  userName: user.users_username,
+                  firstNamne: user.users_first_name,
+                  lastName: user.users_last_name,
+                  type: user.users_user_type,
+                  description: user.users_description,
+                  email: user.users_email,
+                  avatarUrl: user.users_avatar_url,
+                  createdAt: user.users_created_at,
+                  updatedAt: user.users_updated_at
+              };
+
+              res.status(201).json(objUser);
+          })
   });
 
   return authController;
