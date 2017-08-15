@@ -22,7 +22,7 @@ const notificationsController = require('./controllers/notifications.js');
 const connection = mysql.createPool({
   host: 'localhost',
   user: 'root',
-  password: 'admin',
+  password: 'Admin123.',
   database: 'iou'
 });
 
@@ -41,15 +41,10 @@ app.use(function(req, res, next) {
 });
 
 
-app.use(cors({
-/*  allowedOrigins: [
-    'https://80c06665.ngrok.io', 'http://localhost:3000', 'http://decodemtl-ct-tsirrus.c9users.io:8080', '*'
-  ],*/
-}));
+app.use(cors());
 
 app.use(morgan('dev'));
 app.use(bodyParser.json());
-//app.use(cookieParser);
 app.use(checkLoginToken(dataLoader));
 
 
