@@ -11,7 +11,7 @@ CREATE TABLE users (
      email VARCHAR(255) NOT NULL UNIQUE,
      username VARCHAR(255) NOT NULL UNIQUE,
      password VARCHAR(60) NOT NULL,
-     type ENUM('person', 'organisation', 'unlisted'),
+     user_type ENUM('Person', 'Organisation', 'Unlisted') DEFAULT 'Person',
      avatar_url VARCHAR(1000),
      is_deleted BOOLEAN NOT NULL DEFAULT 0,
      first_name VARCHAR(255),
