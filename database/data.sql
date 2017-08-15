@@ -1,6 +1,5 @@
 USE iou;
 
-
 -- users
 INSERT INTO `users` VALUES (1, 'John@Doe.com', 'User1', '$2a$10$ySsfeK9GKC6Cht5lVCilNujKrbRaSFxaYFZZGzBJVlG5vP09REuCC', 'Person', 'https://www.gravatar.com/avatar/8c4114fb407dbb807923e7570a1d6df4?s=60', 0, 'John', 'Doe', NULL, '2017-08-15 13:40:18', '2017-08-15 13:40:18');
 INSERT INTO `users` VALUES (2, 'Jane@Doe.com', 'User2', '$2a$10$kK9/CLhY02G0TKzf.lLbjO0hIpI6LUXXtWaUreYhXU.r31V6w3xuu', 'Person', 'https://www.gravatar.com/avatar/c69d1bbfa2df271297f621962046c4fb?s=60', 0, 'Jane', 'Doe', NULL, '2017-08-15 13:40:32', '2017-08-15 13:40:32');
