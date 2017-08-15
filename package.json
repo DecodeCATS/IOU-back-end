@@ -1,5 +1,5 @@
 {
-  "name": "dashboardly-api",
+  "name": "iou-api",
   "version": "1.0.0",
   "description": "ExpressJS and MySQL-based API for creating shareable boards of bookmarks.",
   "main": "index.js",
@@ -14,7 +14,7 @@
     "node": "8.2.1"
   },
   "keywords": [],
-  "author": "Ziad Saab <ziad.saab@gmail.com>",
+  "author": "DecodeCATS",
   "license": "ISC",
   "homepage": "https://github.com/ziad-saab/dashboardly-api#readme",
   "dependencies": {
