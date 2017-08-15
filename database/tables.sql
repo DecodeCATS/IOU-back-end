@@ -8,9 +8,9 @@ USE iou;
 CREATE TABLE users (
 
      user_id INT AUTO_INCREMENT,
-     email VARCHAR(255) NOT NULL UNIQUE,
+     email VARCHAR(255) NULL UNIQUE,
      username VARCHAR(255) NOT NULL UNIQUE,
-     password VARCHAR(60) NOT NULL,
+     password VARCHAR(60) NULL,
      user_type ENUM('Person', 'Organisation', 'Unlisted') DEFAULT 'Person',
      avatar_url VARCHAR(1000),
      is_deleted BOOLEAN NOT NULL DEFAULT 0,
@@ -56,6 +56,7 @@ CREATE TABLE connections (
 CREATE TABLE contracts (
 
     contract_id INT AUTO_INCREMENT NOT NULL,
+    title VARCHAR (50) NOT NULL,
     payee_id INT NOT NULL,
     payer_id INT DEFAULT NULL,
     parent_id INT DEFAULT NULL,
@@ -113,7 +114,7 @@ CREATE TABLE notifications (
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
     object_id INT NOT NULL,
-    object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users'),
+    object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users', 'connections'),
     notification_type ENUM('payment', 'alert', 'warning', 'request') NOT NULL,
     message VARCHAR(255) NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,

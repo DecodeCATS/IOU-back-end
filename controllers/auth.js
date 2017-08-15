@@ -12,13 +12,13 @@ module.exports = (dataLoader) => {
     // Hash email
     var hash = md5(req.body.email);
 
-    dataLoader.createUser({
-      email: req.body.email,
-      username: req.body.username,
-      password: req.body.password,
-      avatar_url: `https://www.gravatar.com/avatar/${hash}?s=60`,
-      first_name: req.body.first_name,
-      last_name: req.body.last_name
+    dataLoader.createUser( {
+        email: req.body.email,
+        username: req.body.username,
+        password: req.body.password,
+        avatar_url: `https://www.gravatar.com/avatar/${hash}?s=60`,
+        first_name: req.body.first_name,
+        last_name: req.body.last_name,
     })
     .then(user => {
       console.log(user);
@@ -64,7 +64,6 @@ module.exports = (dataLoader) => {
   // Retrieve current user
   authController.get('/me', onlyLoggedIn, (req, res) => {
       dataLoader.getUserFromSession(req.sessionToken)
-
           .then(user => {
               var objUser = {
                   id: user.users_user_id,
@@ -78,7 +77,6 @@ module.exports = (dataLoader) => {
                   createdAt: user.users_created_at,
                   updatedAt: user.users_updated_at
               };
-
               res.status(201).json(objUser);
           })
   });
