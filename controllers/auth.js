@@ -68,7 +68,7 @@ module.exports = (dataLoader) => {
               var objUser = {
                   id: user.users_user_id,
                   userName: user.users_username,
-                  firstNamne: user.users_first_name,
+                  firstName: user.users_first_name,
                   lastName: user.users_last_name,
                   type: user.users_user_type,
                   description: user.users_description,

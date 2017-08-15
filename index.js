@@ -15,6 +15,7 @@ const DashboardlyDataLoader = require('./lib/dashboardly.js');
 const authController = require('./controllers/auth.js');
 const boardsController = require('./controllers/boards.js');
 const bookmarksController = require('./controllers/bookmarks.js');
+const notificationsController = require('./controllers/notifications.js');
 
 
 // Database / data loader initialization
@@ -55,6 +56,7 @@ app.use(checkLoginToken(dataLoader));
 app.use('/auth', authController(dataLoader));
 app.use('/boards', boardsController(dataLoader));
 app.use('/bookmarks', bookmarksController(dataLoader));
+app.use('/notifications', notificationsController(dataLoader));
 
 
 // Start the server

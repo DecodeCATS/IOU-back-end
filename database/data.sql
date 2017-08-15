@@ -24,3 +24,7 @@ INSERT INTO `connections` (user1_id, user2_id) VALUES (2,1);
 INSERT INTO `connections` (user1_id, user2_id) VALUES (3,4);
 INSERT INTO `connections` (user1_id, user2_id) VALUES (4,3);
 
+
+
+
+
