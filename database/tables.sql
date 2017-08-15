@@ -132,7 +132,3 @@ CREATE TABLE notifications_blacklist (
 
     PRIMARY KEY (notifications_blacklist_id)
 );
-
-
-
-
