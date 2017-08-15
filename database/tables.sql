@@ -113,7 +113,7 @@ CREATE TABLE notifications (
     notification_id INT AUTO_INCREMENT NOT NULL,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    object_id INT NOT NULL,
+    object_id INT,
     object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users', 'connections'),
     notification_type ENUM('payment', 'alert', 'warning', 'request') NOT NULL,
     message VARCHAR(255) NOT NULL,
