@@ -27,8 +27,6 @@ module.exports = (dataLoader) => {
         updatedAt: user[0].updatedAt
       };
       console.log('my object', objUser);
-      //res.header('Access-Control-Allow-Origin', '*');
-      //res.header('Access-Control-Request-Headers', 'Content-Type, Authorization');
       res.status(201).json(objUser);
 
     })
@@ -37,26 +35,19 @@ module.exports = (dataLoader) => {
 
   // Create a new session (login)
   authController.post('/sessions', (req, res) => {
-    //No need to use cookies or headers
-    //a token will be sent a json object
-    //AND will stored on a localStorage object provided by react/browser/front-end
     dataLoader.createTokenFromCredentials(req.body.email, req.body.password)
-    .then(token => {
-      return token;
-    })
     .then(token => {
       res.status(201).json({ token: token })
     })
-    //.catch(err => res.send(err.message));
     .catch(err => res.status(401).json({error: err.message}));
   });
 
 
-  // Delete a session (logout)
+  // Logout from a session (logout)
   authController.delete('/sessions', onlyLoggedIn, (req, res) => {
     console.log("req.sessionToken= ", req.sessionToken);
     if (req.sessionToken) {
-      dataLoader.deleteToken(req.sessionToken)
+      dataLoader.logoutUser(req.sessionToken)
         .then(() => res.status(204).end())
         .catch(err => res.status(400).json(err));
     } else {

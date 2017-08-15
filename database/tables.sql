@@ -30,9 +30,9 @@ CREATE TABLE sessions (
     user_id INT UNIQUE NOT NULL,
     token VARCHAR(255) NOT NULL,
     is_valid BOOLEAN NOT NULL DEFAULT 1,
-    login_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
-    updated_time TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
     logout_time TIMESTAMP NULL DEFAULT NULL,
+    created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+    updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
     PRIMARY KEY (session_id),
     FOREIGN KEY (user_id) REFERENCES users (user_id)
@@ -132,7 +132,3 @@ CREATE TABLE notifications_blacklist (
 
     PRIMARY KEY (notifications_blacklist_id)
 );
-
-
-
-
