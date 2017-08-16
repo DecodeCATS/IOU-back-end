@@ -68,6 +68,7 @@ CREATE TABLE contracts (
     due_date TIMESTAMP NULL DEFAULT NULL,
     accepted_date TIMESTAMP NULL DEFAULT NULL,
     contract_status ENUM('pending', 'active', 'completed', 'overdue', 'cancelled'),
+    is_latest BOOLEAN NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
