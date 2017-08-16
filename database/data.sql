@@ -15,6 +15,8 @@ VALUES (1000, 2, 1, 101, 'payments', 'payment', 'Payment made');
 INSERT INTO notifications(notification_id, sender_id, receiver_id, object_id, object_type,  notification_type, message)
 VALUES (1001, 5, 1, 5, 'connections', 'request', 'Connection Request');
 
+INSERT INTO notifications(notification_id, sender_id, receiver_id, object_id, object_type,  notification_type, message)
+VALUES (1002, 2, 1, 97, 'contracts', 'request', 'New Contract');
 -- connections
 
 INSERT INTO `connections` (user1_id, user2_id) VALUES (1,2);
@@ -39,6 +41,8 @@ INSERT INTO `contracts` VALUES (93, 'Test contract with an org', 4, 1, NULL, 'El
 INSERT INTO `contracts` VALUES (94, 'Test contract with an org (Bell)', 6, 1, NULL, 'Internet bill', 12000, 0, 12, 'monthly', NULL, '2017-08-01 00:00:00', 'active', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (95, 'Requested contract proposal', 1, 2, NULL, 'As discussed, need 50 bucks for booze', 5000, 0, 1, 'one-time', '2017-10-01 00:00:00', NULL, 'pending', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (96, 'Open contract proposal 2', NULL, 5, NULL, NULL, 5000, 0, 1, 'one-time', '2017-11-12 00:00:00', NULL, 'pending', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
+
+
 
 -- currencies
 INSERT INTO `currencies` VALUES (1, 'Canadian Dollar', NULL, 1, 'CAD');
