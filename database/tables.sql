@@ -118,6 +118,7 @@ CREATE TABLE notifications (
     object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users', 'connections'),
     notification_type ENUM('payment', 'alert', 'warning', 'request') NOT NULL,
     message VARCHAR(255) NOT NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 

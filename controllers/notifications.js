@@ -7,13 +7,13 @@ module.exports = (dataLoader) => {
 
     notificationController.get('/', onlyLoggedIn, (req, res) => {
         dataLoader.getAllNotificationForUser(req.user)
-        .then(notificationsArray => {
-            var notificationObj = {
-                notifications: notificationsArray
-            };
-            res.status(200).json(notificationObj);
-        })
-        .catch(err => res.status(400).json({error : err.message}));
+            .then(notificationsArray => {
+                var notificationObj = {
+                    notifications: notificationsArray
+                };
+                res.status(200).json(notificationObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
     });
 
     notificationController.delete('/', onlyLoggedIn, (req, res) => {
@@ -23,19 +23,19 @@ module.exports = (dataLoader) => {
 
                 res.sendStatus(204);
             })
-            .catch(err => res.status(400).json({error : err.message}));
+            .catch(err => res.status(400).json({error: err.message}));
 
     });
 
-    notificationController.get('/blacklist', onlyLoggedIn, (req,res) => {
+    notificationController.get('/blacklist', onlyLoggedIn, (req, res) => {
 
     });
 
-    notificationController.post('/blacklist', onlyLoggedIn, (req,res) => {
+    notificationController.post('/blacklist', onlyLoggedIn, (req, res) => {
 
     });
 
-    notificationController.delete('/blacklist', onlyLoggedIn, (req,res) => {
+    notificationController.delete('/blacklist', onlyLoggedIn, (req, res) => {
 
     });
 
