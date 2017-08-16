@@ -22,7 +22,7 @@ const notificationsController = require('./controllers/notifications.js');
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'admin',
+    password: 'Admin123.',
     database: 'iou'
 });
 
