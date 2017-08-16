@@ -16,6 +16,7 @@ const authController = require('./controllers/auth.js');
 const boardsController = require('./controllers/boards.js');
 const bookmarksController = require('./controllers/bookmarks.js');
 const notificationsController = require('./controllers/notifications.js');
+const contractsController = require('./controllers/contracts.js');
 
 
 // Database / data loader initialization
@@ -47,11 +48,11 @@ app.use(morgan('dev'));
 app.use(bodyParser.json());
 app.use(checkLoginToken(dataLoader));
 
-
 app.use('/auth', authController(dataLoader));
 app.use('/boards', boardsController(dataLoader));
 app.use('/bookmarks', bookmarksController(dataLoader));
 app.use('/notifications', notificationsController(dataLoader));
+app.use('/contracts', contractsController(dataLoader));
 
 
 // Start the server

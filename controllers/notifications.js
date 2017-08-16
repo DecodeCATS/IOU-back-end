@@ -6,10 +6,22 @@ module.exports = (dataLoader) => {
     const notificationController = express.Router();
 
     notificationController.get('/', onlyLoggedIn, (req, res) => {
-        dataLoader.getAllNotificationForUser(req.user)
+        dataLoader.getAllNotificationsForUser(req.user)
             .then(notificationsArray => {
+
+                var mapNotificationsArray = notificationsArray.map(function (e) {
+                    var obj = {
+                        id: e.notification_id,
+                        message: e.message,
+                        objectId: e.object_id,
+                        objectType: e.object_type,
+                        senderId: e.sender_id
+                    };
+                    return obj;
+                });
+
                 var notificationObj = {
-                    notifications: notificationsArray
+                    notifications: mapNotificationsArray
                 };
                 res.status(200).json(notificationObj);
             })
@@ -27,6 +39,28 @@ module.exports = (dataLoader) => {
     });
 
     notificationController.get('/blacklist', onlyLoggedIn, (req, res) => {
+        dataLoader.getAllBlacklistedPeopleForUser(req.user)
+            .then(blacklistArray => {
+
+                var mapBlacklistArray = blacklistArray.map(function (e) {
+                    var obj = {
+                        id: e.user_id,
+                        userName: e.username,
+                        firstName: e.first_name,
+                        lastName: e.last_name,
+                        type: e.user_type,
+                        createdAt: e.created_at,
+                        updatedAt: e.updated_at
+                    };
+                    return obj;
+                });
+
+                var blacklistObj = {
+                    blacklist: mapBlacklistArray
+                };
+                res.status(200).json(blacklistObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
 
     });
 
