@@ -29,7 +29,6 @@ module.exports = (dataLoader) => {
     });
 
     notificationController.delete('/', onlyLoggedIn, (req, res) => {
-
         dataLoader.deleteNotification(req.body.notificationId)
             .then(result => {
 
@@ -66,12 +65,32 @@ module.exports = (dataLoader) => {
     });
 
     notificationController.post('/blacklist', onlyLoggedIn, (req, res) => {
-
+        dataLoader.addConnectionToBlacklist(req.body.userId, req.user)
+            .then(insertResult => {
+                if(insertResult.insertId){
+                    return insertResult;
+                }
+                throw new Error ('Failed to add connection to backlist') ;
+            })
+            .then(blacklistArray => {
+                var blacklistObj = {
+                    blacklist: blacklistArray
+                };
+                res.status(201).json(blacklistObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
     });
 
-    notificationController.delete('/blacklist', onlyLoggedIn, (req, res) => {
-
-    });
+    // notificationController.delete('/blacklist', onlyLoggedIn, (req, res) => {
+    //     dataLoader.removeConnectionFromBlacklist(req.bod.userId)
+    //         .then(blacklistArray => {
+    //             var blacklistObj = {
+    //                 blacklist: blacklistArray
+    //             };
+    //             res.status(201).json(blacklistObj);
+    //         })
+    //         .catch(err => res.status(400).json({error: err.message}));
+    // });
 
     return notificationController;
-}
+};
