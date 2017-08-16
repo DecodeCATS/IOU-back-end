@@ -20,10 +20,10 @@ const notificationsController = require('./controllers/notifications.js');
 
 // Database / data loader initialization
 const connection = mysql.createPool({
-  host: 'localhost',
-  user: 'root',
-  password: 'Admin123.',
-  database: 'iou'
+    host: 'localhost',
+    user: 'root',
+    password: 'admin',
+    database: 'iou'
 });
 
 const dataLoader = new DashboardlyDataLoader(connection);
@@ -33,11 +33,11 @@ const dataLoader = new DashboardlyDataLoader(connection);
 const app = express();
 
 // Every time server sends a response, server allows access control in the headers
-app.use(function(req, res, next) {
-  res.header("Access-Control-Allow-Origin", "*");
-  res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH");
-  res.header("Access-Control-Allow-Headers", "Content-Type, authorization");
-  next();
+app.use(function (req, res, next) {
+    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Methods", "GET,HEAD,OPTIONS,POST,PUT,DELETE,PATCH");
+    res.header("Access-Control-Allow-Headers", "Content-Type, authorization");
+    next();
 });
 
 
@@ -57,9 +57,9 @@ app.use('/notifications', notificationsController(dataLoader));
 // Start the server
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
-  if (process.env.C9_HOSTNAME) {
-    console.log(`Web server is listening on https://${process.env.C9_HOSTNAME}`);
-  } else {
-    console.log(`Web server is listening on http://localhost:${port}`);
-  }
+    if (process.env.C9_HOSTNAME) {
+        console.log(`Web server is listening on https://${process.env.C9_HOSTNAME}`);
+    } else {
+        console.log(`Web server is listening on http://localhost:${port}`);
+    }
 });
