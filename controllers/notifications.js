@@ -64,6 +64,7 @@ module.exports = (dataLoader) => {
 
     });
 
+    //end point to add a connection to blacklist
     notificationController.post('/blacklist', onlyLoggedIn, (req, res) => {
         dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
             .then(result =>{
@@ -86,6 +87,7 @@ module.exports = (dataLoader) => {
                 throw new Error ('Failed to add connection to backlist') ;
             })
             .then(blacklistArray => {
+                //map to match the apiary standard
                 var mapBlacklistArray = blacklistArray.map(function (e) {
                     var obj = {
                         id: e.user_id,
@@ -107,16 +109,50 @@ module.exports = (dataLoader) => {
             .catch(err => res.status(400).json({error: err.message}));
     });
 
-    // notificationController.delete('/blacklist', onlyLoggedIn, (req, res) => {
-    //     dataLoader.removeConnectionFromBlacklist(req.bod.userId)
-    //         .then(blacklistArray => {
-    //             var blacklistObj = {
-    //                 blacklist: blacklistArray
-    //             };
-    //             res.status(201).json(blacklistObj);
-    //         })
-    //         .catch(err => res.status(400).json({error: err.message}));
-    // });
+    //endpoint for deleting a blacklist
+    notificationController.delete('/blacklist', onlyLoggedIn, (req, res) => {
+        dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
+            .then(result =>{
+                //check if already blacklisted
+                //console.log('result = ',result[0])
+                if(result[0].isBlacklisted == 0){
+                    throw new Error ('No such connection on blacklist')
+                }
+                return result[0];
+            })
+            .then(() => {
+                //remove from blacklist
+                return dataLoader.removeConnectionFromBlacklist(req.body.userId, req.user);
+            })
+            .then(deleteResult => {
+                //check if delete was success
+                console.log('The delete result is =', deleteResult);
+                if(!deleteResult.insertId){
+                    return dataLoader.getAllBlacklistedPeopleForUser(req.user);
+                }
+                throw new Error ('Failed to delete connection from backlist') ;
+            })
+            .then(blacklistArray => {
+                var mapBlacklistArray = blacklistArray.map(function (e) {
+                    var obj = {
+                        id: e.user_id,
+                        userName: e.username,
+                        firstName: e.first_name,
+                        lastName: e.last_name,
+                        type: e.user_type,
+                        createdAt: e.created_at,
+                        updatedAt: e.updated_at
+                    };
+                    return obj;
+                });
+
+                var blacklistObj = {
+                    blacklist: mapBlacklistArray
+                };
+                res.status(200).json(blacklistObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+    });
 
     return notificationController;
 };
