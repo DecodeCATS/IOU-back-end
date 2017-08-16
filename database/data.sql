@@ -16,7 +16,7 @@ INSERT INTO notifications(notification_id, sender_id, receiver_id, object_id, ob
 VALUES (1001, 5, 1, 5, 'connections', 'request', 'Connection Request');
 
 INSERT INTO notifications(notification_id, sender_id, receiver_id, object_id, object_type,  notification_type, message)
-VALUES (1002, 2, 1, 97, 'contracts', 'request', 'New Contract');
+VALUES (1002, 2, 1, 95, 'contracts', 'request', 'New Contract');
 -- connections
 
 INSERT INTO `connections` (user1_id, user2_id) VALUES (1,2);
