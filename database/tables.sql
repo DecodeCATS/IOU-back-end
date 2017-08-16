@@ -130,11 +130,11 @@ CREATE TABLE notifications (
 -- Table notifications_blacklist
 CREATE TABLE notifications_blacklist (
 
-    notifications_blacklist_id INT AUTO_INCREMENT NOT NULL,
+    notification_blacklist_id INT AUTO_INCREMENT NOT NULL,
     list_owner_id INT NOT NULL,
     blacklisted_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    PRIMARY KEY (notifications_blacklist_id)
+    PRIMARY KEY (notification_blacklist_id)
 );
