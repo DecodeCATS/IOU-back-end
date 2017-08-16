@@ -55,7 +55,7 @@ INSERT INTO `contracts` VALUES (94, 'Test contract with an org (Bell)', 6, 1, NU
 INSERT INTO `contracts` VALUES (95, 'Requested contract proposal', 1, 2, NULL, 'As discussed, need 50 bucks for booze', 5000, 0, 1, 'one-time', '2017-10-01 00:00:00', NULL, 'pending', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (96, 'Open contract proposal 2', NULL, 5, NULL, NULL, 5000, 0, 1, 'one-time', '2017-11-12 00:00:00', NULL, 'pending', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (97, 'Requested contract proposal', 1, 2, NULL, 'As discussed, need 50 bucks for weed', 5000, 0, 1, 'one-time', '2017-10-01 00:00:00', NULL, 'pending', '2017-08-15 14:29:14', '2017-08-15 14:29:14');
-
+INSERT INTO `contracts` VALUES (98, 'Test contract between userId 2 and 1', 2, 1, 90, 'Contract 90, updated description', 2000, 1000, 2, 'monthly', NULL, '2017-01-01 00:00:00', 'active', '2017-08-15 14:22:51', '2017-08-15 14:22:51');
 
 
 -- currencies
