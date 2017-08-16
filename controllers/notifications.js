@@ -65,16 +65,42 @@ module.exports = (dataLoader) => {
     });
 
     notificationController.post('/blacklist', onlyLoggedIn, (req, res) => {
-        dataLoader.addConnectionToBlacklist(req.body.userId, req.user)
+        dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
+            .then(result =>{
+                //check if already blacklisted
+                //console.log('result = ',result[0])
+                if(result[0].isBlacklisted >=1){
+                   throw new Error ('Connection is already in blacklist')
+                }
+                return result[0];
+            })
+            .then(() => {
+                //add to blacklist
+                return dataLoader.addConnectionToBlacklist(req.body.userId, req.user);
+            })
             .then(insertResult => {
+                //if insert was success return entire blacklist
                 if(insertResult.insertId){
-                    return insertResult;
+                    return dataLoader.getAllBlacklistedPeopleForUser(req.user);
                 }
                 throw new Error ('Failed to add connection to backlist') ;
             })
             .then(blacklistArray => {
+                var mapBlacklistArray = blacklistArray.map(function (e) {
+                    var obj = {
+                        id: e.user_id,
+                        userName: e.username,
+                        firstName: e.first_name,
+                        lastName: e.last_name,
+                        type: e.user_type,
+                        createdAt: e.created_at,
+                        updatedAt: e.updated_at
+                    };
+                    return obj;
+                });
+
                 var blacklistObj = {
-                    blacklist: blacklistArray
+                    blacklist: mapBlacklistArray
                 };
                 res.status(201).json(blacklistObj);
             })
