@@ -47,4 +47,4 @@ module.exports = (dataLoader) => {
 
 
     return contractsController;
-}
+};
