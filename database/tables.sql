@@ -8,9 +8,9 @@ USE iou;
 CREATE TABLE users (
 
      user_id INT AUTO_INCREMENT,
-     email VARCHAR(255) NOT NULL UNIQUE,
+     email VARCHAR(255) NULL UNIQUE,
      username VARCHAR(255) NOT NULL UNIQUE,
-     password VARCHAR(60) NOT NULL,
+     password VARCHAR(60) NULL,
      user_type ENUM('Person', 'Organisation', 'Unlisted') DEFAULT 'Person',
      avatar_url VARCHAR(1000),
      is_deleted BOOLEAN NOT NULL DEFAULT 0,
@@ -56,7 +56,8 @@ CREATE TABLE connections (
 CREATE TABLE contracts (
 
     contract_id INT AUTO_INCREMENT NOT NULL,
-    payee_id INT NOT NULL,
+    title VARCHAR (50) NOT NULL,
+    payee_id INT,
     payer_id INT NOT NULL,
     parent_id INT DEFAULT NULL,
     description VARCHAR(255) DEFAULT NULL,
@@ -66,7 +67,8 @@ CREATE TABLE contracts (
     payment_frequency ENUM ('one-time', 'daily', 'weekly', 'bi-weekly', 'monthly', 'yearly', 'random') DEFAULT 'one-time',
     due_date TIMESTAMP NULL DEFAULT NULL,
     accepted_date TIMESTAMP NULL DEFAULT NULL,
-    contract_status ENUM('active', 'completed', 'overdue', 'cancelled'),
+    contract_status ENUM('pending', 'active', 'completed', 'overdue', 'cancelled'),
+    is_latest BOOLEAN NOT NULL DEFAULT 1,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -82,6 +84,7 @@ CREATE TABLE currencies (
     name VARCHAR(255) NOT NULL,
     symbol VARCHAR(10),
     is_base BOOLEAN NOT NULL DEFAULT 1,
+    currency_code VARCHAR(3) NOT NULL,
 
     PRIMARY KEY (currency_id)
 );
@@ -112,10 +115,11 @@ CREATE TABLE notifications (
     notification_id INT AUTO_INCREMENT NOT NULL,
     sender_id INT NOT NULL,
     receiver_id INT NOT NULL,
-    object_id INT NOT NULL,
-    object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users'),
+    object_id INT,
+    object_type ENUM('payments', 'contracts', 'notifications', 'currencies', 'users', 'connections'),
     notification_type ENUM('payment', 'alert', 'warning', 'request') NOT NULL,
     message VARCHAR(255) NOT NULL,
+    is_deleted BOOLEAN NOT NULL DEFAULT 0,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
@@ -127,11 +131,11 @@ CREATE TABLE notifications (
 -- Table notifications_blacklist
 CREATE TABLE notifications_blacklist (
 
-    notifications_blacklist_id INT AUTO_INCREMENT NOT NULL,
-    sender_id INT NOT NULL,
-    receiver_id INT NOT NULL,
+    notification_blacklist_id INT AUTO_INCREMENT NOT NULL,
+    list_owner_id INT NOT NULL,
+    blacklisted_id INT NOT NULL,
     created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
     updated_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP ON UPDATE CURRENT_TIMESTAMP,
 
-    PRIMARY KEY (notifications_blacklist_id)
+    PRIMARY KEY (notification_blacklist_id)
 );
