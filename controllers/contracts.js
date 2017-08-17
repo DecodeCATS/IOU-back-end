@@ -5,6 +5,7 @@ const onlyLoggedIn = require('../lib/only-logged-in');
 module.exports = (dataLoader) => {
     const contractsController = express.Router();
 
+    //get all the contracts of current user
     contractsController.get('/', onlyLoggedIn, (req, res) => {
 
         dataLoader.getAllActiveContractsOfUser(req.user)
@@ -38,6 +39,7 @@ module.exports = (dataLoader) => {
             .catch(err => res.status(400).json({error: err.message}))
     });
 
+    //get all the contracts versions of the contract with given id
     contractsController.get('/:id', onlyLoggedIn, (req, res) => {
 
         dataLoader.getContractHistoryFromContractId(req.user.users_user_id, req.params.id)
@@ -102,13 +104,25 @@ module.exports = (dataLoader) => {
                         updatedAt: contract.updated_at
                     }
                 };
-
                 //console.log("The json object to be returned =", contractObj)
                 res.status(200).json(contractObj);
             })
             .catch(err => res.status(400).json({error: err.message}));
-
     });
+
+    //cancel the current contract
+    contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
+        dataLoader.deleteExistingContractOfUser(req.user, req.params.id)
+            .then(result => {
+                res.status(204).json({message: "The Contract has been Cancelled"})
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+    });
+
+    //modify the current contract
+    // contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
+    //
+    // }
 
     return contractsController;
 };
