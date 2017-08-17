@@ -79,7 +79,7 @@ module.exports = (dataLoader) => {
   
     contractsController.post('/', onlyLoggedIn, (req, res) => {
 
-        dataLoader.createNewContract(req.user.users_user_id, req.body)
+        dataLoader.createNewContract(req.user, req.body)
             .then(contract => {
 
                 var contractObj = {
