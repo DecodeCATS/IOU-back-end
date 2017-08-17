@@ -23,7 +23,7 @@ const contractsController = require('./controllers/contracts.js');
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Admin123.',
+    password: 'admin',
     database: 'iou'
 });
 
