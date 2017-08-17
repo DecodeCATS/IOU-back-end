@@ -58,6 +58,17 @@ module.exports = (dataLoader) => {
             .catch(err => res.status(400).json({error: err.message}));
     })
 
+    connectionsController.post('/request', onlyLoggedIn, (req, res) => {
+
+        dataLoader.requestNewConnection(req.user, req.body)
+            .then(connection => {
+                console.log(connection);
+                res.sendStatus(204);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    })
+
 
     return connectionsController;
 };
