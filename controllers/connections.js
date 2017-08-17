@@ -32,6 +32,32 @@ module.exports = (dataLoader) => {
 
     });
 
+    connectionsController.post('/search', onlyLoggedIn, (req, res) => {
+
+        dataLoader.searchForConnection(req.body)
+            .then(usersArray => {
+
+                var mapUsersArray = usersArray.map(user => {
+                    var obj = {
+                        id: user.user_id,
+                        userName: user.username,
+                        firstName: user.first_name,
+                        lastName: user.last_name,
+                        type: user.user_type,
+                        createdAt: user.created_at,
+                        updatedAt: user.updated_at
+                    };
+                    return obj;
+                });
+
+                var usersObj = {
+                    users: mapUsersArray
+                };
+                res.status(200).json(usersObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+    })
+
 
     return connectionsController;
 };
