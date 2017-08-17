@@ -17,6 +17,7 @@ const boardsController = require('./controllers/boards.js');
 const bookmarksController = require('./controllers/bookmarks.js');
 const notificationsController = require('./controllers/notifications.js');
 const contractsController = require('./controllers/contracts.js');
+const connectionsController = require('./controllers/connections.js');
 
 
 // Database / data loader initialization
@@ -53,6 +54,7 @@ app.use('/boards', boardsController(dataLoader));
 app.use('/bookmarks', bookmarksController(dataLoader));
 app.use('/notifications', notificationsController(dataLoader));
 app.use('/contracts', contractsController(dataLoader));
+app.use('/connections', connectionsController(dataLoader));
 
 
 // Start the server
