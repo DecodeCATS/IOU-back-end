@@ -81,7 +81,7 @@ module.exports = (dataLoader) => {
 
         dataLoader.createNewContract(req.user, req.body)
             .then(contract => {
-                console.log("The new contract is =", contract)
+                //console.log("The new contract is =", contract)
 
                 var contractObj = {
                     contract: {
@@ -103,7 +103,7 @@ module.exports = (dataLoader) => {
                     }
                 };
 
-                console.log("The json object to be returned =", contractObj)
+                //console.log("The json object to be returned =", contractObj)
                 res.status(200).json(contractObj);
             })
             .catch(err => res.status(400).json({error: err.message}));
