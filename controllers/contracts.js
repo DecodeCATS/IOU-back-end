@@ -79,8 +79,9 @@ module.exports = (dataLoader) => {
   
     contractsController.post('/', onlyLoggedIn, (req, res) => {
 
-        dataLoader.createNewContract(req.user.users_user_id, req.body)
+        dataLoader.createNewContract(req.user, req.body)
             .then(contract => {
+                //console.log("The new contract is =", contract)
 
                 var contractObj = {
                     contract: {
@@ -96,11 +97,13 @@ module.exports = (dataLoader) => {
                         acceptedDate:contract.accepted_date,
                         status: contract.contract_status,
                         payerId: contract.payer_id,
-                        payeeId: contract.payeeId,
+                        payeeId: contract.payee_id,
                         createdAt: contract.created_at,
                         updatedAt: contract.updated_at
                     }
                 };
+
+                //console.log("The json object to be returned =", contractObj)
                 res.status(200).json(contractObj);
             })
             .catch(err => res.status(400).json({error: err.message}));
