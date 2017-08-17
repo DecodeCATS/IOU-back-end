@@ -75,5 +75,37 @@ module.exports = (dataLoader) => {
             })
             .catch(err => res.status(400).json({error: err.message}));
     });
+
+  
+    contractsController.post('/', onlyLoggedIn, (req, res) => {
+
+        dataLoader.createNewContract(req.user.users_user_id, req.body)
+            .then(contract => {
+
+                var contractObj = {
+                    contract: {
+                        id: contract.contract_id,
+                        parentId: contract.parent_id,
+                        title: contract.title,
+                        description: contract.description,
+                        totalAmount: contract.total_amount,
+                        remainingAmount: contract.remaining_amount,
+                        numberOfPayments: contract.numberOfPayments,
+                        paymentFrequency: contract.payment_frequency,
+                        dueDate: contract.due_date,
+                        acceptedDate:contract.accepted_date,
+                        status: contract.contract_status,
+                        payerId: contract.payer_id,
+                        payeeId: contract.payeeId,
+                        createdAt: contract.created_at,
+                        updatedAt: contract.updated_at
+                    }
+                };
+                res.status(200).json(contractObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    });
+
     return contractsController;
 };
