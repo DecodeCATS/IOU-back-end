@@ -8,9 +8,9 @@ module.exports = (dataLoader) => {
     connectionsController.get('/', onlyLoggedIn, (req, res) => {
 
         dataLoader.getAllConnectionsFromUser(req.user.users_user_id)
-            .then(connectionArray => {
+            .then(connectionsArray => {
 
-                var mapConnectionsArray = connectionArray.map(connection => {
+                var mapConnectionsArray = connectionsArray.map(connection => {
                     var obj = {
                         id: connection.user_id,
                         userName: connection.username,
@@ -56,7 +56,7 @@ module.exports = (dataLoader) => {
                 res.status(200).json(usersObj);
             })
             .catch(err => res.status(400).json({error: err.message}));
-    })
+    });
 
     connectionsController.post('/request', onlyLoggedIn, (req, res) => {
 
@@ -67,7 +67,37 @@ module.exports = (dataLoader) => {
             })
             .catch(err => res.status(400).json({error: err.message}));
 
-    })
+    });
+
+    connectionsController.post('/accept', onlyLoggedIn, (req, res) => {
+
+        dataLoader.acceptNewConnection(req.user, req.body)
+            .then(connectionsArray => {
+
+                var mapConnectionsArray = connectionsArray.map(connection => {
+                    var obj = {
+                        id: connection.user_id,
+                        userName: connection.username,
+                        firstName: connection.first_name,
+                        lastName: connection.last_name,
+                        type: connection.user_type,
+                        createdAt: connection.created_at,
+                        updatedAt: connection.updated_at
+                    };
+                    return obj;
+                });
+
+                var connectionObj = {
+                    users: mapConnectionsArray
+                };
+                res.status(200).json(connectionObj);
+
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    });
+
+    // BLACKLIST FUNCTIONS --------------------------------------------
 
     connectionsController.get('/blacklist', onlyLoggedIn, (req, res) => {
         dataLoader.getAllBlacklistedPeopleForUser(req.user)
