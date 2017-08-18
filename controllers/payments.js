@@ -92,5 +92,28 @@ module.exports = (dataLoader) => {
 
     });
 
+    paymentsController.patch('/', onlyLoggedIn, (req, res) => {
+
+        dataLoader.modifyPayment(req.user, req.body)
+            .then(payment => {
+
+                var paymentObj = {
+                    paymentId: payment.payment_id,
+                    contractId: payment.contract_id,
+                    type: payment.payment_type,
+                    amount: payment.payment_amount,
+                    status: payment.payment_status,
+                    dueDate: payment.due_date,
+                    paidDate: payment.payment_date,
+                    createdAt: payment.created_at,
+                    updatedAt: payment.updated_at,
+                };
+                res.status(200).json(paymentObj);
+
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    });
+
     return paymentsController;
 };
