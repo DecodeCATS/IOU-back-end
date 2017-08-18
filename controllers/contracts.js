@@ -36,49 +36,12 @@ module.exports = (dataLoader) => {
 
                 res.status(200).json(contractsObj);
             })
-            .catch(err => res.status(400).json({error: err.message}))
+            .catch(err => res.status(400).json({error: err.message, test: "hello"}))
     });
 
-    //get all the contracts versions of the contract with given id
-    contractsController.get('/:id', onlyLoggedIn, (req, res) => {
 
-        dataLoader.getContractHistoryFromContractId(req.user.users_user_id, req.params.id)
-            .then(contractsArray => {
 
-                contractsArray.sort(function (a, b) {
-                    return b.contract_id - a.contract_id;
-                });
-
-                var mapContractsArray = contractsArray.map(function (e) {
-                    var obj = {
-                        id: e.contract_id,
-                        parentId: e.parent_id,
-                        title: e.title,
-                        description: e.description,
-                        total_amount: e.total_amount,
-                        remainingAmount: e.remaining_amount,
-                        numberOfPayments: e.number_of_payments,
-                        paymentFrequency: e.payment_frequency,
-                        dueDate: e.due_date,
-                        acceptedDate: e.accepted_date,
-                        status: e.contract_status,
-                        payerId: e.payer_id,
-                        payeeId: e.payee_id,
-                        createdAt: e.created_at,
-                        updatedAt: e.updated_at
-                    };
-                    return obj;
-                });
-
-                var contractsObj = {
-                    contracts: mapContractsArray
-                };
-                res.status(200).json(contractsObj);
-            })
-            .catch(err => res.status(400).json({error: err.message}));
-    });
-
-  
+    //createNewContract
     contractsController.post('/', onlyLoggedIn, (req, res) => {
 
         dataLoader.createNewContract(req.user, req.body)
@@ -112,12 +75,12 @@ module.exports = (dataLoader) => {
 
     //cancel the current contract
     contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
-        dataLoader.checkIfContractIsChangeable(req.user, req.params.id)
+        dataLoader.checkIfContractIsCancelable(req.user, req.params.id)
             .then(result => {
                 //Step 1: checking if contract can be cancelled
-                console.log('isChangeable',result[0].isChangeable)
-                if(!result[0].isChangeable){
-                    throw new Error ('You currently do not have permission to delete the contract')
+                console.log('isCancelable',result[0].isCancelable);
+                if(!result[0].isCancelable){
+                    throw new Error ('You currently do not have permission to cancel this contract')
                 }
                 //console.log('isChangeable',result[0]);
                 return result[0];
@@ -141,21 +104,25 @@ module.exports = (dataLoader) => {
         dataLoader.checkIfContractIsChangeable(req.user, req.params.id)
             .then(result => {
                 //Step 1: checking if contract can be cancelled
-                console.log('isChangeable',result[0].isChangeable)
-                if(!result[0].isChangeable){
-                    throw new Error ('You currently do not have permission to modify the contract')
+                console.log('isChangable',result[0].isChangable)
+                if(!result[0].isChangable){
+                    throw new Error ('You currently do not have permission to modify this Contract')
+                }
+                else if(result[0].isChangable > 1) {
+                    throw new Error ('This Contract already has Modifications pending')
                 }
                 //console.log('isChangeable',result[0]);
                 return result[0];
             })
             .then(result => {
                 //Step 2: modifying the contract
+                //And sending notifications
                 console.log("cancelActiveContract=", result);
-                return dataLoader.modifyActiveContract(req.user, req.params.id);
+                return dataLoader.modifyActiveContract(req.user, req.body, req.params.id);
             })
             .then(newContract => {
-                //step 3: sending notification to user
-                console.log("result from modify", result);
+                //Checking the blacklist of users
+                console.log("result from modify", newContract[0]);
                 //step 4: send back the contract to front end
                 //response was not nested into contracts, ask chhaya
                 var contractObj = {
@@ -175,9 +142,86 @@ module.exports = (dataLoader) => {
                     createdAt: newContract[0].created_at,
                     updatedAt: newContract[0].updated_at
                 };
-                res.status(204).json(contractObj)
+                console.log(contractObj);
+                res.status(200).json(contractObj)
+                //res.status(200).json({msg: "heloo"})
             })
             .catch(err => res.status(400).json({error: err.message}));
     });
+
+
+    contractsController.get('/proposals/', onlyLoggedIn, (req, res) => {
+        console.log("hello");
+        dataLoader.getAllProposedContractsOfUser(req.user)
+            .then(contractsArray => {
+                var mappedcontractsArray = contractsArray.map(contracts => {
+                    var obj = {
+                        id: contracts.contract_id,
+                        parentId: contracts.parent_id,
+                        title: contracts.title,
+                        description: contracts.description,
+                        total_amount: contracts.total_amount,
+                        remainingAmount: contracts.remaining_amount,
+                        numberOfPayments: contracts.number_of_payments,
+                        paymentFrequency: contracts.payment_frequency,
+                        dueDate: contracts.due_date,
+                        acceptedDate: contracts.accepted_date,
+                        status: contracts.contract_status,
+                        payerId: contracts.payer_id,
+                        payeeId: contracts.payee_id,
+                        createdAt: contracts.created_at,
+                        updatedAt: contracts.updated_at
+                    };
+                    return obj;
+                });
+                var contractsObj = {
+                    proposals: mappedcontractsArray
+                };
+
+                res.status(200).json(contractsObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}))
+    });
+
+    //get all the contracts versions of the contract with given id
+    contractsController.get('/:id', onlyLoggedIn, (req, res) => {
+            //console.log(req.params)
+        dataLoader.getContractHistoryFromContractId(req.user.users_user_id, parseInt(req.params.id))
+            .then(contractsArray => {
+
+                contractsArray.sort(function (a, b) {
+                    return b.contract_id - a.contract_id;
+                });
+
+                var mapContractsArray = contractsArray.map(function (e) {
+                    //console.log(e, e.payee_id, "mapped e object")
+                    var obj = {
+                        id: e.contract_id,
+                        parentId: e.parent_id,
+                        title: e.title,
+                        description: e.description,
+                        total_amount: e.total_amount,
+                        remainingAmount: e.remaining_amount,
+                        numberOfPayments: e.number_of_payments,
+                        paymentFrequency: e.payment_frequency,
+                        dueDate: e.due_date,
+                        acceptedDate: e.accepted_date,
+                        status: e.contract_status,
+                        payerId: e.payer_id,
+                        payeeId: e.payee_id,
+                        createdAt: e.created_at,
+                        updatedAt: e.updated_at
+                    };
+                    return obj;
+                });
+
+                var contractsObj = {
+                    contracts: mapContractsArray
+                };
+                res.status(200).json(contractsObj);
+            })
+            .catch(err => res.status(400).json({error: err.message, test: "world"}));
+    });
+
     return contractsController;
 };
