@@ -142,26 +142,26 @@ module.exports = (dataLoader) => {
     connectionsController.post('/blacklist', onlyLoggedIn, (req, res) => {
         dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
             .then(result =>{
-                //check if already blacklisted
-                //console.log('result = ',result[0])
+                // Check if already blacklisted
+
                 if(result[0].isBlacklisted >=1){
                     throw new Error ('Connection is already in blacklist')
                 }
                 return result[0];
             })
             .then(() => {
-                //add to blacklist
+                // Add to blacklist
                 return dataLoader.addConnectionToBlacklist(req.body.userId, req.user);
             })
             .then(insertResult => {
-                //if insert was success return entire blacklist
+                // If insert was success return entire blacklist
                 if(insertResult.insertId){
                     return dataLoader.getAllBlacklistedPeopleForUser(req.user);
                 }
                 throw new Error ('Failed to add connection to backlist') ;
             })
             .then(blacklistArray => {
-                //map to match the apiary standard
+                // Map to match the apiary standard
                 var mapBlacklistArray = blacklistArray.map(function (e) {
                     var obj = {
                         id: e.user_id,
@@ -186,9 +186,9 @@ module.exports = (dataLoader) => {
     // Endpoint for deleting a blacklist
     connectionsController.delete('/blacklist', onlyLoggedIn, (req, res) => {
         dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
-            .then(result =>{
-                //check if already blacklisted
-                //console.log('result = ',result[0])
+            .then(result => {
+
+                // Check if already blacklisted
                 if(result[0].isBlacklisted == 0){
                     throw new Error ('No such connection on blacklist')
                 }
@@ -199,7 +199,7 @@ module.exports = (dataLoader) => {
                 return dataLoader.removeConnectionFromBlacklist(req.body.userId, req.user);
             })
             .then(deleteResult => {
-                //check if delete was success
+                // Check if delete was success
                 console.log('The delete result is =', deleteResult);
                 if(!deleteResult.insertId){
                     return dataLoader.getAllBlacklistedPeopleForUser(req.user);
