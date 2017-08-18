@@ -112,14 +112,14 @@ module.exports = (dataLoader) => {
 
     //cancel the current contract
     contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
-        dataLoader.checkIfContractIsDeletable(req.user, req.params.id)
+        dataLoader.checkIfContractIsChangeable(req.user, req.params.id)
             .then(result => {
                 //Step 1: checking if contract can be cancelled
-                console.log('isDeletable',result[0].isDeletable)
-                if(!result[0].isDeletable){
-                    throw new Error ('You do not have permission to delete the contract')
+                console.log('isChangeable',result[0].isChangeable)
+                if(!result[0].isChangeable){
+                    throw new Error ('You currently do not have permission to delete the contract')
                 }
-                //console.log('isDeletable',result[0]);
+                //console.log('isChangeable',result[0]);
                 return result[0];
             })
             .then(result => {
@@ -137,9 +137,47 @@ module.exports = (dataLoader) => {
     });
 
     //modify the current contract
-    // contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
-    //
-    // }
-
+    contractsController.patch('/:id', onlyLoggedIn, (req, res) => {
+        dataLoader.checkIfContractIsChangeable(req.user, req.params.id)
+            .then(result => {
+                //Step 1: checking if contract can be cancelled
+                console.log('isChangeable',result[0].isChangeable)
+                if(!result[0].isChangeable){
+                    throw new Error ('You currently do not have permission to modify the contract')
+                }
+                //console.log('isChangeable',result[0]);
+                return result[0];
+            })
+            .then(result => {
+                //Step 2: modifying the contract
+                console.log("cancelActiveContract=", result);
+                return dataLoader.modifyActiveContract(req.user, req.params.id);
+            })
+            .then(newContract => {
+                //step 3: sending notification to user
+                console.log("result from modify", result);
+                //step 4: send back the contract to front end
+                //response was not nested into contracts, ask chhaya
+                var contractObj = {
+                    id: newContract[0].contract_id,
+                    parentId: newContract[0].parent_id,
+                    title: newContract[0].title,
+                    description: newContract[0].description,
+                    total_amount: newContract[0].total_amount,
+                    remainingAmount: newContract[0].remaining_amount,
+                    numberOfPayments: newContract[0].number_of_payments,
+                    paymentFrequency: newContract[0].payment_frequency,
+                    dueDate: newContract[0].due_date,
+                    acceptedDate: newContract[0].accepted_date,
+                    status: newContract[0].contract_status,
+                    payerId: newContract[0].payer_id,
+                    payeeId: newContract[0].payee_id,
+                    createdAt: newContract[0].created_at,
+                    updatedAt: newContract[0].updated_at
+                };
+                res.status(204).json(contractObj)
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+    });
     return contractsController;
 };
