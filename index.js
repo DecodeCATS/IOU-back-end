@@ -24,7 +24,7 @@ const connectionsController = require('./controllers/connections.js');
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'admin',
+    password: 'Admin123.',
     database: 'iou'
 });
 
