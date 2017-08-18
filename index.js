@@ -18,13 +18,15 @@ const bookmarksController = require('./controllers/bookmarks.js');
 const notificationsController = require('./controllers/notifications.js');
 const contractsController = require('./controllers/contracts.js');
 const connectionsController = require('./controllers/connections.js');
+const paymentsController = require('./controllers/payments.js');
+const currenciesController = require('./controllers/currencies.js');
 
 
 // Database / data loader initialization
 const connection = mysql.createPool({
     host: 'localhost',
     user: 'root',
-    password: 'Admin123.',
+    password: 'admin',
     database: 'iou'
 });
 
@@ -55,6 +57,8 @@ app.use('/bookmarks', bookmarksController(dataLoader));
 app.use('/notifications', notificationsController(dataLoader));
 app.use('/contracts', contractsController(dataLoader));
 app.use('/connections', connectionsController(dataLoader));
+app.use('/payments', paymentsController(dataLoader));
+app.use('/currencies', currenciesController(dataLoader));
 
 
 // Start the server

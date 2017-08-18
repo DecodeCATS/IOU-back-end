@@ -15,7 +15,9 @@ module.exports = (dataLoader) => {
                         message: e.message,
                         objectId: e.object_id,
                         objectType: e.object_type,
-                        senderId: e.sender_id
+                        senderId: e.sender_id,
+                        createdAt: e.created_at,
+                        updatedAt: e.updated_at
                     };
                     return obj;
                 });
