@@ -62,7 +62,7 @@ module.exports = (dataLoader) => {
 
         dataLoader.requestNewConnection(req.user, req.body)
             .then(connection => {
-                console.log(connection);
+
                 res.sendStatus(204);
             })
             .catch(err => res.status(400).json({error: err.message}));
@@ -96,6 +96,19 @@ module.exports = (dataLoader) => {
             .catch(err => res.status(400).json({error: err.message}));
 
     });
+
+    connectionsController.delete('/', onlyLoggedIn, (req, res) => {
+
+        dataLoader.deleteConnection(req.user, req.body)
+            .then(result => {
+
+                res.sendStatus(204);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+    });
+
+
+
 
     // BLACKLIST FUNCTIONS --------------------------------------------
 
