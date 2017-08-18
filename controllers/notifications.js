@@ -115,7 +115,7 @@ module.exports = (dataLoader) => {
             .then(result =>{
                 //check if already blacklisted
                 //console.log('result = ',result[0])
-                if(result[0].isBlacklisted == 0){
+                if(result[0].isBlacklisted === 0){
                     throw new Error ('No such connection on blacklist')
                 }
                 return result[0];

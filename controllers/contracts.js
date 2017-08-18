@@ -112,9 +112,26 @@ module.exports = (dataLoader) => {
 
     //cancel the current contract
     contractsController.delete('/:id', onlyLoggedIn, (req, res) => {
-        dataLoader.deleteExistingContractOfUser(req.user, req.params.id)
+        dataLoader.checkIfContractIsDeletable(req.user, req.params.id)
             .then(result => {
-                res.status(204).json({message: "The Contract has been Cancelled"})
+                //Step 1: checking if contract can be cancelled
+                console.log('isDeletable',result[0].isDeletable)
+                if(!result[0].isDeletable){
+                    throw new Error ('You do not have permission to delete the contract')
+                }
+                //console.log('isDeletable',result[0]);
+                return result[0];
+            })
+            .then(result => {
+                //Step 2: cancelling the contract
+                console.log("cancelActiveContract=", result);
+                return dataLoader.cancelActiveContract(req.user, req.params.id);
+            })
+            .then(result => {
+                //step 3 sending notification to user
+                console.log("result from delete", result);
+                var msgObj = {message: 'The Contract has been cancelled'}
+                res.status(204).json(msgObj)
             })
             .catch(err => res.status(400).json({error: err.message}));
     });
