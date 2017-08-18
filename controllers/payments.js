@@ -20,7 +20,7 @@ module.exports = (dataLoader) => {
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
                         createdAt: payments.created_at,
-                        updatedAt: payments.updated_at,
+                        updatedAt: payments.updated_at
                     };
                     return obj;
                 });
@@ -49,7 +49,7 @@ module.exports = (dataLoader) => {
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
                         createdAt: payments.created_at,
-                        updatedAt: payments.updated_at,
+                        updatedAt: payments.updated_at
                     };
                     return obj;
                 });
@@ -78,7 +78,7 @@ module.exports = (dataLoader) => {
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
                         createdAt: payments.created_at,
-                        updatedAt: payments.updated_at,
+                        updatedAt: payments.updated_at
                     };
                     return obj;
                 });
@@ -106,9 +106,21 @@ module.exports = (dataLoader) => {
                     dueDate: payment.due_date,
                     paidDate: payment.payment_date,
                     createdAt: payment.created_at,
-                    updatedAt: payment.updated_at,
+                    updatedAt: payment.updated_at
                 };
                 res.status(200).json(paymentObj);
+
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    });
+
+    paymentsController.delete('/', onlyLoggedIn, (req, res) => {
+
+        dataLoader.deletePayment(req.user, req.body)
+            .then(payment => {
+
+                res.sendStatus(204);
 
             })
             .catch(err => res.status(400).json({error: err.message}));
