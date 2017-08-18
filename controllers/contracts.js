@@ -150,7 +150,7 @@ module.exports = (dataLoader) => {
     });
 
 
-    contractsController.get('/proposals/', onlyLoggedIn, (req, res) => {
+    contractsController.get('/proposals', onlyLoggedIn, (req, res) => {
         console.log("hello");
         dataLoader.getAllProposedContractsOfUser(req.user)
             .then(contractsArray => {
@@ -181,6 +181,31 @@ module.exports = (dataLoader) => {
                 res.status(200).json(contractsObj);
             })
             .catch(err => res.status(400).json({error: err.message}))
+    });
+
+    contractsController.post('/proposals', onlyLoggedIn, (req, res) => {
+       dataLoader.acceptContractForUser(req.body)
+           .then(result => {
+                var acceptedContractObj = {
+                    id: result[0].contract_id,
+                    parentId: result[0].parent_id,
+                    title: result[0].title,
+                    description: result[0].description,
+                    totalAmount: result[0].total_amount,
+                    remainingAmount: result[0].remaining_amount,
+                    numberOfPayments: result[0].number_of_payments,
+                    paymentFrequency: result[0].payment_frequency,
+                    dueDate: result[0].dueDate,
+                    acceptedDate: result[0].acceptedDate,
+                    status: result[0].status,
+                    payerId: result[0].payer_id,
+                    payeeId: result[0].payee_id,
+                    createdAt: result[0].createdAt,
+                    updatedAt: result[0].updatedAt
+                };
+               res.status(200).json(acceptedContractObj);
+           })
+           .catch(err => res.status(400).json({error: err.message}))
     });
 
     //get all the contracts versions of the contract with given id
@@ -222,6 +247,7 @@ module.exports = (dataLoader) => {
             })
             .catch(err => res.status(400).json({error: err.message, test: "world"}));
     });
+
 
     return contractsController;
 };

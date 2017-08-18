@@ -31,7 +31,7 @@ module.exports = (dataLoader) => {
     notificationController.delete('/', onlyLoggedIn, (req, res) => {
         dataLoader.deleteNotification(req.body.notificationId)
             .then(result => {
-
+                //needs fixing
                 res.sendStatus(204);
             })
             .catch(err => res.status(400).json({error: err.message}));
