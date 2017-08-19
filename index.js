@@ -23,20 +23,20 @@ const currenciesController = require('./controllers/currencies.js');
 
 
 // Database / data loader initialization
-// const connection = mysql.createPool({
-//     host: 'localhost',
-//     user: 'root',
-//     password: 'admin',
-//     database: 'iou'
-// });
-
-
 const connection = mysql.createPool({
-    host: process.env.CLEARDB_HOST,
-    user: process.env.CLEARDB_USER,
-    password: process.env.CLEARDB_PASSWORD,
-    database: process.env.CLEARDB_DATABASE
+    host: 'localhost',
+    user: 'root',
+    password: 'admin',
+    database: 'iou'
 });
+
+
+// const connection = mysql.createPool({
+//     host: process.env.CLEARDB_HOST,
+//     user: process.env.CLEARDB_USER,
+//     password: process.env.CLEARDB_PASSWORD,
+//     database: process.env.CLEARDB_DATABASE
+// });
 
 const dataLoader = new DashboardlyDataLoader(connection);
 
