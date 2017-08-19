@@ -36,7 +36,7 @@ module.exports = (dataLoader) => {
 
                 res.status(200).json(contractsObj);
             })
-            .catch(err => res.status(400).json({error: err.message, test: "hello"}))
+            .catch(err => res.status(400).json({error: err.message}));
     });
 
 
@@ -245,7 +245,15 @@ module.exports = (dataLoader) => {
                 };
                 res.status(200).json(contractsObj);
             })
-            .catch(err => res.status(400).json({error: err.message, test: "world"}));
+            .catch(err => {
+                if (err.message === 'Cannot read property \'payee_id\' of undefined') {
+                    res.status(400).json({error: 'No such contract'});
+                }
+                else {
+
+                    res.status(400).json({error: err.message});
+                }
+            });
     });
 
 
