@@ -6,7 +6,7 @@ module.exports = (dataLoader) => {
     const contractsController = express.Router();
 
     //get all the contracts of current user
-    contractsController.get('/', onlyLoggedIn, (req, res) => {
+    contractsController.get('/all', onlyLoggedIn, (req, res) => {
 
         dataLoader.getAllActiveContractsOfUser(req.user)
             .then(contractsArray => {
