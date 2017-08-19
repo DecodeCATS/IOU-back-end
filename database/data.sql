@@ -74,10 +74,10 @@ INSERT INTO `contracts` VALUES (99, '1 and 7 have blacklisted each other', 1, 7,
 
 -- currencies
 INSERT INTO `currencies` VALUES (1, 'Canadian Dollar', '$', 1, 'CAD');
-INSERT INTO `currencies` VALUES (1, 'Euro', '€', 1, 'EUR');
-INSERT INTO `currencies` VALUES (1, 'Yen', '¥', 1, 'YEN');
-INSERT INTO `currencies` VALUES (1, 'Bitcoin', 'B', 1, 'BIT');
-INSERT INTO `currencies` VALUES (1, 'Pound', '£', 1, 'GBP');
+INSERT INTO `currencies` VALUES (2, 'Euro', '€', 1, 'EUR');
+INSERT INTO `currencies` VALUES (3, 'Yen', '¥', 1, 'YEN');
+INSERT INTO `currencies` VALUES (4, 'Bitcoin', 'B', 1, 'BIT');
+INSERT INTO `currencies` VALUES (5, 'Pound', '£', 1, 'GBP');
 
 -- payments
 INSERT INTO `payments` VALUES (101, 90, 1, '2017-08-01 00:00:00', '2017-07-31 00:00:00', 1000, 'payment', 'completed', 0, '2017-08-15 14:37:57', '2017-08-15 14:37:57');
@@ -91,4 +91,4 @@ INSERT INTO `payments` VALUES (202, 91, 1, '2017-10-01 00:00:00', NULL, 1000, 'p
 
 
 
---select `contract_id` as `isChangable` from `contracts` where ((`contract_status` = 'active' or `contract_status` = 'pending') and `payee_id` = 1 and `contract_id` = '93' and `is_latest` = 1) or ((`contract_status` = 'active' or `contract_status` = 'pending') and `payer_id` = 1 and `contract_id` = '93' and `is_latest` = 1)
+-- select `contract_id` as `isChangable` from `contracts` where ((`contract_status` = 'active' or `contract_status` = 'pending') and `payee_id` = 1 and `contract_id` = '93' and `is_latest` = 1) or ((`contract_status` = 'active' or `contract_status` = 'pending') and `payer_id` = 1 and `contract_id` = '93' and `is_latest` = 1)
