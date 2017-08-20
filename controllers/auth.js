@@ -19,6 +19,7 @@ module.exports = (dataLoader) => {
             avatar_url: `https://www.gravatar.com/avatar/${hash}?s=60`,
             first_name: req.body.firstName,
             last_name: req.body.lastName,
+            description: req.body.description
         })
             .then(user => {
                 console.log(user);
