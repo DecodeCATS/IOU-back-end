@@ -23,6 +23,7 @@ module.exports = (dataLoader) => {
                         status: contracts.contract_status,
                         payerId: contracts.payer_id,
                         payeeId: contracts.payee_id,
+                        isLatest: contracts.is_latest,
                         createdAt: contracts.created_at,
                         updatedAt: contracts.updated_at
                     };
@@ -56,6 +57,7 @@ module.exports = (dataLoader) => {
                         status: contracts.contract_status,
                         payerId: contracts.payer_id,
                         payeeId: contracts.payee_id,
+                        isLatest: contracts.is_latest,
                         createdAt: contracts.created_at,
                         updatedAt: contracts.updated_at
                     };
@@ -95,6 +97,7 @@ module.exports = (dataLoader) => {
                         status: contracts.contract_status,
                         payerId: contracts.payer_id,
                         payeeId: contracts.payee_id,
+                        isLatest: contracts.is_latest,
                         createdAt: contracts.created_at,
                         updatedAt: contracts.updated_at
                     };
@@ -107,34 +110,6 @@ module.exports = (dataLoader) => {
                 res.status(200).json(contractsObj);
             })
             .catch(err => res.status(400).json({error: err.message}));
-
-        //dataLoader.createNewContract(req.user, req.body)
-        //.then(contract => {
-        //console.log("The new contract is =", contract)
-
-        // var contractObj = {
-        //     contract: {
-        //         id: contract.contract_id,
-        //         parentId: contract.parent_id,
-        //         title: contract.title,
-        //         description: contract.description,
-        //         totalAmount: contract.total_amount,
-        //         remainingAmount: contract.remaining_amount,
-        //         numberOfPayments: contract.numberOfPayments,
-        //         paymentFrequency: contract.payment_frequency,
-        //         dueDate: contract.due_date,
-        //         acceptedDate:contract.accepted_date,
-        //         status: contract.contract_status,
-        //         payerId: contract.payer_id,
-        //         payeeId: contract.payee_id,
-        //         createdAt: contract.created_at,
-        //         updatedAt: contract.updated_at
-        //     }
-        // };
-        //console.log("The json object to be returned =", contractObj)
-        //res.status(200).json(contractObj);
-        // })
-        // .catch(err => res.status(400).json({error: err.message}));
     });
 
     //cancel the current contract
@@ -203,6 +178,7 @@ module.exports = (dataLoader) => {
                     status: newContract[0].contract_status,
                     payerId: newContract[0].payer_id,
                     payeeId: newContract[0].payee_id,
+                    isLatest: newContract[0].is_latest,
                     createdAt: newContract[0].created_at,
                     updatedAt: newContract[0].updated_at
                 };
@@ -233,6 +209,7 @@ module.exports = (dataLoader) => {
                         status: contracts.contract_status,
                         payerId: contracts.payer_id,
                         payeeId: contracts.payee_id,
+                        isLatest: contracts.is_latest,
                         createdAt: contracts.created_at,
                         updatedAt: contracts.updated_at
                     };
@@ -264,6 +241,7 @@ module.exports = (dataLoader) => {
                     status: result.status,
                     payerId: result.payer_id,
                     payeeId: result.payee_id,
+                    isLatest: result.is_latest,
                     createdAt: result.createdAt,
                     updatedAt: result.updatedAt
                 };
@@ -298,6 +276,7 @@ module.exports = (dataLoader) => {
                         status: e.contract_status,
                         payerId: e.payer_id,
                         payeeId: e.payee_id,
+                        isLatest: e.is_latest,
                         createdAt: e.created_at,
                         updatedAt: e.updated_at
                     };
