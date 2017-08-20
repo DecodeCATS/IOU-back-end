@@ -17,7 +17,7 @@ module.exports = (dataLoader) => {
                         firstName: connection.first_name,
                         lastName: connection.last_name,
                         type: connection.user_type,
-                        //isBlacklisted: connection.is_blacklisted,
+                        isBlacklisted: connection.is_blacklisted,
                         createdAt: connection.created_at,
                         updatedAt: connection.updated_at
                     };
@@ -44,6 +44,7 @@ module.exports = (dataLoader) => {
                         username: connection.username,
                         firstName: connection.first_name,
                         type: connection.user_type,
+                        isBlacklisted: connection.is_blacklisted,
                         createdAt: connection.created_at,
                         updatedAt: connection.updated_at
                     };
@@ -130,6 +131,7 @@ module.exports = (dataLoader) => {
                         firstName: connection.first_name,
                         lastName: connection.last_name,
                         type: connection.user_type,
+                        isBlacklisted: connection.is_blacklisted,
                         createdAt: connection.created_at,
                         updatedAt: connection.updated_at
                     };
@@ -171,6 +173,7 @@ module.exports = (dataLoader) => {
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
+                        isBlacklisted: e.is_blacklisted,
                         createdAt: e.created_at,
                         updatedAt: e.updated_at
                     };
@@ -218,6 +221,7 @@ module.exports = (dataLoader) => {
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
+                        isBlacklisted: e.is_blacklisted,
                         createdAt: e.created_at,
                         updatedAt: e.updated_at
                     };
@@ -263,6 +267,7 @@ module.exports = (dataLoader) => {
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
+                        isBlacklisted: e.is_blacklisted,
                         createdAt: e.created_at,
                         updatedAt: e.updated_at
                     };
