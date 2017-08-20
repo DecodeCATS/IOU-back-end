@@ -23,7 +23,7 @@ module.exports = (dataLoader) => {
             .then(user => {
                 console.log(user);
                 var objUser = {
-                    username: user.id,
+                    username: user.username,
                     firstName: user.first_name,
                     lastName: user.last_name,
                     password: user.password,
