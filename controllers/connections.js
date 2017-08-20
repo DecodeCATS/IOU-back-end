@@ -208,7 +208,9 @@ module.exports = (dataLoader) => {
                 // If insert was success return entire blacklist
                 console.log(insertResult);
                 if(insertResult.affectedRows){
-                    return dataLoader.getAllBlacklistedPeopleForUser(req.user);
+                    //TODO: now returns all the connections both blacklisted and not
+                    //return dataLoader.getAllBlacklistedPeopleForUser(req.user);
+                    return dataLoader.getAllConnectionsFromUser(req.user.users_user_id)
                 }
                 throw new Error ('Failed to add connection to backlist') ;
             })
