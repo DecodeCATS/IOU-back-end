@@ -17,6 +17,7 @@ module.exports = (dataLoader) => {
                         firstName: connection.first_name,
                         lastName: connection.last_name,
                         type: connection.user_type,
+                        //isBlacklisted: connection.is_blacklisted,
                         createdAt: connection.created_at,
                         updatedAt: connection.updated_at
                     };
