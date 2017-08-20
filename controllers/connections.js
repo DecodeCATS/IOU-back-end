@@ -143,7 +143,6 @@ module.exports = (dataLoader) => {
         dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
             .then(result =>{
                 // Check if already blacklisted
-
                 if(result[0].isBlacklisted >=1){
                     throw new Error ('Connection is already in blacklist')
                 }
@@ -155,7 +154,8 @@ module.exports = (dataLoader) => {
             })
             .then(insertResult => {
                 // If insert was success return entire blacklist
-                if(insertResult.insertId){
+                console.log(insertResult);
+                if(insertResult.affectedRows){
                     return dataLoader.getAllBlacklistedPeopleForUser(req.user);
                 }
                 throw new Error ('Failed to add connection to backlist') ;
@@ -190,7 +190,7 @@ module.exports = (dataLoader) => {
 
                 // Check if already blacklisted
                 if(result[0].isBlacklisted == 0){
-                    throw new Error ('No such connection on blacklist')
+                    throw new Error ('Connection is not on blacklist')
                 }
                 return result[0];
             })
@@ -201,7 +201,7 @@ module.exports = (dataLoader) => {
             .then(deleteResult => {
                 // Check if delete was success
                 console.log('The delete result is =', deleteResult);
-                if(!deleteResult.insertId){
+                if(deleteResult.affectedRows){
                     return dataLoader.getAllBlacklistedPeopleForUser(req.user);
                 }
                 throw new Error ('Failed to delete connection from backlist') ;
