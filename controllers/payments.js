@@ -65,7 +65,12 @@ module.exports = (dataLoader) => {
 
     paymentsController.post('/contracts', onlyLoggedIn, (req, res) => {
 
-        dataLoader.addPaymentForContract(req.user, req.body)
+        dataLoader.checkIfContractIsActive(req.user.users_user_id, req.body.contractId)
+            .then(result => {
+                console.log("result= ", result)
+                return dataLoader.addPaymentForContract(req.user, req.body, result[0].payee_id)
+            })
+        //dataLoader.addPaymentForContract(req.user, req.body)
             .then(paymentsArray => {
 
                 var mapPaymentsArray = paymentsArray.map(payments => {
