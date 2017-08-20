@@ -60,33 +60,41 @@ module.exports = (dataLoader) => {
 
     connectionsController.post('/request', onlyLoggedIn, (req, res) => {
 
-        dataLoader.requestNewConnection(req.user, req.body)
-            .then(connection => {
-                res.sendStatus(204);
-            })
-            .catch(err => res.status(400).json({error: err.message}));
-
-        //Steps
-        //1. check if connection already exist
-        //2. if not request new connection &
+        // Steps
+        // 1. check if connection already exist
+        // 2. if not request new connection &
         // send notification to friend (done by request New Connection)
-        // dataLoader.checkIfConnectionExists(req.user.users_user_id, req.body.userId)
-        //     .then(result=> {
-        //         if(!result){
-        //             return dataLoader.requestNewConnection(req.user, req.body)
-        //                 .then(connection => {
-        //                     res.sendStatus(204);
-        //                 })
-        //                 .catch(err => res.status(400).json({error: err.message}));
-        //         }
-        //     })
+        console.log("Outside")
+        dataLoader.checkIfConnectionExists(req.user.users_user_id, req.body.userId)
+            .then(result=> {
+                console.log("inside", result.isConnected);
+                if(!result.isConnected){
+                    console.log("inside", result);
+                    return dataLoader.requestNewConnection(req.user, req.body)
+                        .then(connection => {
+                            res.sendStatus(204);
+                        });
+                }
+                throw new Error ("You are already connected")
+            })
+            .catch(err => res.status(400).json({error: err.message}))
     });
 
     connectionsController.post('/accept', onlyLoggedIn, (req, res) => {
 
-        dataLoader.acceptNewConnection(req.user, req.body)
+        return Promise.all([dataLoader.acceptConnection(req.user.users_user_id, req.body.userId),
+                            dataLoader.acceptConnection(req.body.userId, req.user.users_user_id)])
+            .then(result => {
+                //send notification
+                console.log("result", result);
+                return dataLoader.sendNotificationForAcceptedConnection(req.user, req.body, result)
+            })
+            .then(result => {
+                //get all the connections now
+                return dataLoader.getAllConnectionsFromUser(req.user.users_user_id);
+            })
             .then(connectionsArray => {
-
+                //send them to the user
                 var mapConnectionsArray = connectionsArray.map(connection => {
                     var obj = {
                         id: connection.user_id,
@@ -104,56 +112,8 @@ module.exports = (dataLoader) => {
                     users: mapConnectionsArray
                 };
                 res.status(200).json(connectionObj);
-
             })
             .catch(err => res.status(400).json({error: err.message}));
-
-
-        //Step1: accept the connection
-        //Step2: send a notification to the other person
-        //Step3: send back the all connections as response
-        // return Promise.all([dataLoader.acceptConnection(req.user.users_user_id, req.body.userId),
-        //                     dataLoader.acceptConnection(req.body.userId, req.user.users_user_id)])
-        //     .then(result => {
-        //         //send notification
-        //         const qry =
-        //             knex
-        //                 .insert({
-        //                     sender_id: req.user.users_user_id,
-        //                     receiver_id: req.body.userId,
-        //                     object_id: result[0][0].insertId,
-        //                     object_type: 'connections',
-        //                     message: req.user.users_username + 'accepted your connection request'
-        //                 })
-        //                 .into(notifications)
-        //                 .toString()
-        //         return this.query(qry);
-        //     })
-        //     .then(result => {
-        //         //get all the connections now
-        //         return dataLoader.getAllConnectionsFromUser(req.user.users_user_id);
-        //     })
-        //     .then(connectionsArray => {
-        //
-        //         var mapConnectionsArray = connectionsArray.map(connection => {
-        //             var obj = {
-        //                 id: connection.user_id,
-        //                 userName: connection.username,
-        //                 firstName: connection.first_name,
-        //                 lastName: connection.last_name,
-        //                 type: connection.user_type,
-        //                 createdAt: connection.created_at,
-        //                 updatedAt: connection.updated_at
-        //             };
-        //             return obj;
-        //         });
-        //
-        //         var connectionObj = {
-        //             users: mapConnectionsArray
-        //         };
-        //         res.status(200).json(connectionObj);
-        //     })
-        //     .catch(err => res.status(400).json({error: err.message}));
 
     });
 
