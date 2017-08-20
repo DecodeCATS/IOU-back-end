@@ -60,20 +60,41 @@ module.exports = (dataLoader) => {
 
     connectionsController.post('/request', onlyLoggedIn, (req, res) => {
 
-        dataLoader.requestNewConnection(req.user, req.body)
-            .then(connection => {
-
-                res.sendStatus(204);
+        // Steps
+        // 1. check if connection already exist
+        // 2. if not request new connection &
+        // send notification to friend (done by request New Connection)
+        console.log("Outside")
+        dataLoader.checkIfConnectionExists(req.user.users_user_id, req.body.userId)
+            .then(result=> {
+                console.log("inside", result.isConnected);
+                if(!result.isConnected){
+                    console.log("inside", result);
+                    return dataLoader.requestNewConnection(req.user, req.body)
+                        .then(connection => {
+                            res.sendStatus(204);
+                        });
+                }
+                throw new Error ("You are already connected")
             })
-            .catch(err => res.status(400).json({error: err.message}));
-
+            .catch(err => res.status(400).json({error: err.message}))
     });
 
     connectionsController.post('/accept', onlyLoggedIn, (req, res) => {
 
-        dataLoader.acceptNewConnection(req.user, req.body)
+        return Promise.all([dataLoader.acceptConnection(req.user.users_user_id, req.body.userId),
+                            dataLoader.acceptConnection(req.body.userId, req.user.users_user_id)])
+            .then(result => {
+                //send notification
+                console.log("result", result);
+                return dataLoader.sendNotificationForAcceptedConnection(req.user, req.body, result)
+            })
+            .then(result => {
+                //get all the connections now
+                return dataLoader.getAllConnectionsFromUser(req.user.users_user_id);
+            })
             .then(connectionsArray => {
-
+                //send them to the user
                 var mapConnectionsArray = connectionsArray.map(connection => {
                     var obj = {
                         id: connection.user_id,
@@ -91,7 +112,6 @@ module.exports = (dataLoader) => {
                     users: mapConnectionsArray
                 };
                 res.status(200).json(connectionObj);
-
             })
             .catch(err => res.status(400).json({error: err.message}));
 
