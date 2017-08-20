@@ -14,7 +14,7 @@ module.exports = (dataLoader) => {
 
         dataLoader.createUser( {
             email: req.body.email,
-            username: req.body.userName,
+            username: req.body.username,
             password: req.body.password,
             avatar_url: `https://www.gravatar.com/avatar/${hash}?s=60`,
             first_name: req.body.firstName,
@@ -23,7 +23,7 @@ module.exports = (dataLoader) => {
             .then(user => {
                 console.log(user);
                 var objUser = {
-                    userName: user.id,
+                    username: user.id,
                     firstName: user.first_name,
                     lastName: user.last_name,
                     password: user.password,
@@ -67,7 +67,7 @@ module.exports = (dataLoader) => {
             .then(user => {
                 var objUser = {
                     id: user.users_user_id,
-                    userName: user.users_username,
+                    username: user.users_username,
                     firstName: user.users_first_name,
                     lastName: user.users_last_name,
                     type: user.users_user_type,

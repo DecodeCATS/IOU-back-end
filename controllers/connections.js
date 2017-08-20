@@ -13,7 +13,7 @@ module.exports = (dataLoader) => {
                 var mapConnectionsArray = connectionsArray.map(connection => {
                     var obj = {
                         id: connection.user_id,
-                        userName: connection.username,
+                        username: connection.username,
                         firstName: connection.first_name,
                         lastName: connection.last_name,
                         type: connection.user_type,
@@ -40,7 +40,7 @@ module.exports = (dataLoader) => {
                 var mapUsersArray = usersArray.map(user => {
                     var obj = {
                         id: user.user_id,
-                        userName: user.username,
+                        username: user.username,
                         firstName: user.first_name,
                         lastName: user.last_name,
                         type: user.user_type,
@@ -77,7 +77,7 @@ module.exports = (dataLoader) => {
                 var mapConnectionsArray = connectionsArray.map(connection => {
                     var obj = {
                         id: connection.user_id,
-                        userName: connection.username,
+                        username: connection.username,
                         firstName: connection.first_name,
                         lastName: connection.last_name,
                         type: connection.user_type,
@@ -119,7 +119,7 @@ module.exports = (dataLoader) => {
                 var mapBlacklistArray = blacklistArray.map(function (e) {
                     var obj = {
                         id: e.user_id,
-                        userName: e.username,
+                        username: e.username,
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
@@ -165,7 +165,7 @@ module.exports = (dataLoader) => {
                 var mapBlacklistArray = blacklistArray.map(function (e) {
                     var obj = {
                         id: e.user_id,
-                        userName: e.username,
+                        username: e.username,
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
@@ -210,7 +210,7 @@ module.exports = (dataLoader) => {
                 var mapBlacklistArray = blacklistArray.map(function (e) {
                     var obj = {
                         id: e.user_id,
-                        userName: e.username,
+                        username: e.username,
                         firstName: e.first_name,
                         lastName: e.last_name,
                         type: e.user_type,
