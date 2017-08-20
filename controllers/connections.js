@@ -35,7 +35,7 @@ module.exports = (dataLoader) => {
 
     connectionsController.get('/organisations', onlyLoggedIn, (req, res) => {
 
-        dataLoader.getAllOrganisationFromUser(req.user.users_user_id)
+        dataLoader.getAllOrganisationFromDB(req.user.users_user_id)
             .then(connectionsArray => {
 
                 var mapConnectionsArray = connectionsArray.map(connection => {
