@@ -184,24 +184,24 @@ module.exports = (dataLoader) => {
     });
 
     contractsController.post('/proposals', onlyLoggedIn, (req, res) => {
-       dataLoader.acceptContractForUser(req.body)
+       dataLoader.acceptContractForUser(req.user, req.body)
            .then(result => {
                 var acceptedContractObj = {
-                    id: result[0].contract_id,
-                    parentId: result[0].parent_id,
-                    title: result[0].title,
-                    description: result[0].description,
-                    totalAmount: result[0].total_amount,
-                    remainingAmount: result[0].remaining_amount,
-                    numberOfPayments: result[0].number_of_payments,
-                    paymentFrequency: result[0].payment_frequency,
-                    dueDate: result[0].dueDate,
-                    acceptedDate: result[0].acceptedDate,
-                    status: result[0].status,
-                    payerId: result[0].payer_id,
-                    payeeId: result[0].payee_id,
-                    createdAt: result[0].createdAt,
-                    updatedAt: result[0].updatedAt
+                    id: result.contract_id,
+                    parentId: result.parent_id,
+                    title: result.title,
+                    description: result.description,
+                    totalAmount: result.total_amount,
+                    remainingAmount: result.remaining_amount,
+                    numberOfPayments: result.number_of_payments,
+                    paymentFrequency: result.payment_frequency,
+                    dueDate: result.dueDate,
+                    acceptedDate: result.accepted_date,
+                    status: result.status,
+                    payerId: result.payer_id,
+                    payeeId: result.payee_id,
+                    createdAt: result.createdAt,
+                    updatedAt: result.updatedAt
                 };
                res.status(200).json(acceptedContractObj);
            })
