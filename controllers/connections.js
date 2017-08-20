@@ -32,6 +32,33 @@ module.exports = (dataLoader) => {
 
     });
 
+    connectionsController.get('/organisations', onlyLoggedIn, (req, res) => {
+
+        dataLoader.getAllOrganisationFromUser(req.user.users_user_id)
+            .then(connectionsArray => {
+
+                var mapConnectionsArray = connectionsArray.map(connection => {
+                    var obj = {
+                        id: connection.user_id,
+                        username: connection.username,
+                        firstName: connection.first_name,
+                        type: connection.user_type,
+                        createdAt: connection.created_at,
+                        updatedAt: connection.updated_at
+                    };
+                    return obj;
+                });
+
+                var connectionObj = {
+                    users: mapConnectionsArray
+                };
+                res.status(200).json(connectionObj);
+            })
+            .catch(err => res.status(400).json({error: err.message}));
+
+    });
+
+
     connectionsController.post('/search', onlyLoggedIn, (req, res) => {
 
         dataLoader.searchForConnection(req.body)
@@ -160,6 +187,7 @@ module.exports = (dataLoader) => {
 
     // End point to add a connection to blacklist
     connectionsController.post('/blacklist', onlyLoggedIn, (req, res) => {
+        //TODO: check if person has an active contract with the connection
         dataLoader.checkBlacklistedConnection(req.body.userId, req.user)
             .then(result =>{
                 // Check if already blacklisted
