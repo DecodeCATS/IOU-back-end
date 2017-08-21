@@ -19,6 +19,7 @@ module.exports = (dataLoader) => {
                         status: payments.payment_status,
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
+                        contractParentId: payments.parent_id,  //This was added
                         createdAt: payments.created_at,
                         updatedAt: payments.updated_at
                     };
@@ -48,6 +49,7 @@ module.exports = (dataLoader) => {
                         status: payments.payment_status,
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
+                        contractParentId: payments.parent_id,
                         createdAt: payments.created_at,
                         updatedAt: payments.updated_at
                     };
@@ -82,6 +84,7 @@ module.exports = (dataLoader) => {
                         status: payments.payment_status,
                         dueDate: payments.due_date,
                         paidDate: payments.payment_date,
+                        contractParentId: payments.parent_id,
                         createdAt: payments.created_at,
                         updatedAt: payments.updated_at
                     };
