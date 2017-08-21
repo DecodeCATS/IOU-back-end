@@ -13,6 +13,7 @@ INSERT INTO `users` VALUES (7, 'bart@simpson.com', 'User7', '$2a$10$fj.NCmWDvGg1
 
 -- notifications_blackilist
 INSERT INTO `notifications_blacklist`(notification_blacklist_id, list_owner_id, blacklisted_id) VALUES (1, 1, 7);
+INSERT INTO `notifications_blacklist`(notification_blacklist_id, list_owner_id, blacklisted_id) VALUES (2, 7, 1);
 
 
 
@@ -43,7 +44,7 @@ INSERT INTO `connections` (user1_id, user2_id) VALUES (4,2);
 INSERT INTO `connections` (user1_id, user2_id) VALUES (3,4);
 INSERT INTO `connections` (user1_id, user2_id) VALUES (4,3);
 INSERT INTO `connections` (user1_id, user2_id) VALUES (1,7);
-INSERT INTO `connections` (user1_id, user2_id) VALUES (7,1);
+INSERT INTO `connections` (user1_id, user2_id, is_blacklisted) VALUES (7,1,1);
 
 
 -- contracts
@@ -56,10 +57,27 @@ INSERT INTO `contracts` VALUES (95, 'Requested contract proposal', 1, 2, NULL, '
 INSERT INTO `contracts` VALUES (96, 'Open contract proposal 2', NULL, 5, NULL, NULL, 5000, 0, 1, 'one-time', '2017-11-12 00:00:00', NULL, 'pending', 1, '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (97, 'Requested contract proposal', 1, 2, NULL, 'As discussed, need 50 bucks for weed', 5000, 0, 1, 'one-time', '2017-10-01 00:00:00', NULL, 'pending', 1, '2017-08-15 14:29:14', '2017-08-15 14:29:14');
 INSERT INTO `contracts` VALUES (98, 'Test contract between userId 2 and 1', 2, 1, 90, 'Contract 90, updated description', 2000, 1000, 2, 'monthly', NULL, '2017-01-01 00:00:00', 'active', 1, '2017-08-15 14:22:51', '2017-08-15 14:22:51');
+INSERT INTO `contracts` VALUES (99, '1 and 7 have blacklisted each other', 1, 7, NULL, 'Blaclist test', 2000, 2000, 2, 'monthly', NULL, '2017-01-01 00:00:00', 'pending', 1, '2017-08-15 14:22:51', '2017-08-15 14:22:51');
+
+-- 'pending','active','completed','overdue','cancelled', 'declined'
+--
+-- ('contract_id', 'title', 'parent_id', 'contract_status', 'is_latest', 'accepted_date',)
+-- (100, 'Initital Contract', NULL, 'pending', '0', Null)
+-- (101, 'Initital Contract Accepted', 100, 'active', '1', Null) --previous becomes 0
+-- (102, 'Contract Modification Proposed', 100, 'pending', '1', Null) --previous becomes 0
+-- (103, 'Contract Modification Accepted', 100, 'active', '0', Null) --previous becomes 0
+-- (103, '2nd Contract Modification Proposed', 100, 'pending', '1', Null) --previous becomes 0
+-- (103, '2nd Contract Modification Declined', 100, 'cancelled', '0', Null) --previous becomes 0
+
+
 
 
 -- currencies
-INSERT INTO `currencies` VALUES (1, 'Canadian Dollar', NULL, 1, 'CAD');
+INSERT INTO `currencies` VALUES (1, 'Canadian Dollar', '$', 1, 'CAD');
+INSERT INTO `currencies` VALUES (2, 'Euro', '€', 1, 'EUR');
+INSERT INTO `currencies` VALUES (3, 'Yen', '¥', 1, 'YEN');
+INSERT INTO `currencies` VALUES (4, 'Bitcoin', 'B', 1, 'BIT');
+INSERT INTO `currencies` VALUES (5, 'Pound', '£', 1, 'GBP');
 
 -- payments
 INSERT INTO `payments` VALUES (101, 90, 1, '2017-08-01 00:00:00', '2017-07-31 00:00:00', 1000, 'payment', 'completed', 0, '2017-08-15 14:37:57', '2017-08-15 14:37:57');
@@ -73,3 +91,4 @@ INSERT INTO `payments` VALUES (202, 91, 1, '2017-10-01 00:00:00', NULL, 1000, 'p
 
 
 
+-- select `contract_id` as `isChangable` from `contracts` where ((`contract_status` = 'active' or `contract_status` = 'pending') and `payee_id` = 1 and `contract_id` = '93' and `is_latest` = 1) or ((`contract_status` = 'active' or `contract_status` = 'pending') and `payer_id` = 1 and `contract_id` = '93' and `is_latest` = 1)

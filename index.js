@@ -17,14 +17,25 @@ const boardsController = require('./controllers/boards.js');
 const bookmarksController = require('./controllers/bookmarks.js');
 const notificationsController = require('./controllers/notifications.js');
 const contractsController = require('./controllers/contracts.js');
+const connectionsController = require('./controllers/connections.js');
+const paymentsController = require('./controllers/payments.js');
+const currenciesController = require('./controllers/currencies.js');
 
 
-// Database / data loader initialization
+//Database / data loader initialization
+// const connection = mysql.createPool({
+//     host: 'localhost',
+//     user: 'root',
+//     password: 'Admin123.',
+//     database: 'iou'
+// });
+
+
 const connection = mysql.createPool({
-    host: 'localhost',
-    user: 'root',
-    password: 'Admin123.',
-    database: 'iou'
+    host: process.env.CLEARDB_HOST,
+    user: process.env.CLEARDB_USER,
+    password: process.env.CLEARDB_PASSWOgitRD,
+    database: process.env.CLEARDB_DATABASE
 });
 
 const dataLoader = new DashboardlyDataLoader(connection);
@@ -53,6 +64,9 @@ app.use('/boards', boardsController(dataLoader));
 app.use('/bookmarks', bookmarksController(dataLoader));
 app.use('/notifications', notificationsController(dataLoader));
 app.use('/contracts', contractsController(dataLoader));
+app.use('/connections', connectionsController(dataLoader));
+app.use('/payments', paymentsController(dataLoader));
+app.use('/currencies', currenciesController(dataLoader));
 
 
 // Start the server
