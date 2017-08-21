@@ -225,6 +225,7 @@ module.exports = (dataLoader) => {
     });
 
     contractsController.post('/proposals', onlyLoggedIn, (req, res) => {
+        //TODO: See the return might need fixing
         dataLoader.acceptContractForUser(req.user, req.body)
             .then(result => {
                 var acceptedContractObj = {
@@ -238,7 +239,7 @@ module.exports = (dataLoader) => {
                     paymentFrequency: result.payment_frequency,
                     dueDate: result.dueDate,
                     acceptedDate: result.accepted_date,
-                    status: result.status,
+                    status: result.contract_status,
                     payerId: result.payer_id,
                     payeeId: result.payee_id,
                     isLatest: result.is_latest,
